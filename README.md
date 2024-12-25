@@ -67,7 +67,7 @@ This will return the URL to request to update game parameters:
 4) Via GET request `/api/tictactoe/multiplayer/PRIVATE_TOKEN` you will receive the data of that match:
 ```js
 {
-  time: Date.now(), //Timestamp in ms
+  time: Date.now(), //Timestamp in ms of when the game started
   x: 'MTczNTA5MTc5MDg3NQ6DMAKd', //User X's private token
   o: 'MTczNTA5Mjg1OTcxOA6CMAvR', //User O's private token
   board: {
@@ -83,7 +83,7 @@ This will return the URL to request to update game parameters:
 5) Via POST request `/api/tictactoe/multiplayer/PRIVATE_TOKEN`, sending as body:
 ```js
 {
-  time: 1735124400000, //Timestamp in ms obtained from GET request on `/api/tictactoe/multiplayer/PRIVATE_TOKEN`
+  time: 1735124400000, //Timestamp in ms of when the game started (obtained from GET request on `/api/tictactoe/multiplayer/PRIVATE_TOKEN`)
   x: 'MTczNTA5MTc5MDg3NQ6DMAKd', //User X's private token
   o: 'MTczNTA5Mjg1OTcxOA6CMAvR', //User O's private token
   board: {
