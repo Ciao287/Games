@@ -26,94 +26,94 @@ function checkAllCellsFilled() {
   for (let cell in board) {
     if (board.hasOwnProperty(cell) && board[cell] === false) {
       return false;
-    }
-  }
+    };
+  };
   return true;
-}
+};
 
 function checkWinner() {
   let { board } = gameData;
 
   if (board.c1 === "X" && board.c2 === "X" && board.c3 === "X") {
-    return "X"
+    return "X";
   } else if (board.c4 === "X" && board.c5 === "X" && board.c6 === "X") {
-    return "X"
+    return "X";
   } else if (board.c7 === "X" && board.c8 === "X" && board.c9 === "X") {
-    return "X"
+    return "X";
   } else if (board.c1 === "X" && board.c4 === "X" && board.c7 === "X") {
-    return "X"
+    return "X";
   } else if (board.c2 === "X" && board.c5 === "X" && board.c8 === "X") {
-    return "X"
+    return "X";
   } else if (board.c3 === "X" && board.c6 === "X" && board.c9 === "X") {
-    return "X"
+    return "X";
   } else if (board.c1 === "X" && board.c5 === "X" && board.c9 === "X") {
-    return "X"
+    return "X";
   } else if (board.c3 === "X" && board.c5 === "X" && board.c7 === "X") {
-    return "X"
+    return "X";
   } else if (board.c1 === "O" && board.c2 === "O" && board.c3 === "O") {
-    return "O"
+    return "O";
   } else if (board.c4 === "O" && board.c5 === "O" && board.c6 === "O") {
-    return "O"
+    return "O";
   } else if (board.c7 === "O" && board.c8 === "O" && board.c9 === "O") {
-    return "O"
+    return "O";
   } else if (board.c1 === "O" && board.c4 === "O" && board.c7 === "O") {
-    return "O"
+    return "O";
   } else if (board.c2 === "O" && board.c5 === "O" && board.c8 === "O") {
-    return "O"
+    return "O";
   } else if (board.c3 === "O" && board.c6 === "O" && board.c9 === "O") {
-    return "O"
+    return "O";
   } else if (board.c1 === "O" && board.c5 === "O" && board.c9 === "O") {
-    return "O"
+    return "O";
   } else if (board.c3 === "O" && board.c5 === "O" && board.c7 === "O") {
-    return "O"
+    return "O";
   };
 
   if (checkAllCellsFilled()) {
-    return "Tie"
+    return "Tie";
   };
 
   return false;
-}
+};
 
 function checkAndDrawLine() {
   let { board } = gameData;
 
   if (board.c1 === "X" && board.c2 === "X" && board.c3 === "X") {
-    return drawLine(['c1', 'c2', 'c3'])
+    return drawLine(['c1', 'c2', 'c3']);
   } else if (board.c4 === "X" && board.c5 === "X" && board.c6 === "X") {
-    return drawLine(['c4', 'c5', 'c6'])
+    return drawLine(['c4', 'c5', 'c6']);
   } else if (board.c7 === "X" && board.c8 === "X" && board.c9 === "X") {
-    return drawLine(['c7', 'c8', 'c9'])
+    return drawLine(['c7', 'c8', 'c9']);
   } else if (board.c1 === "X" && board.c4 === "X" && board.c7 === "X") {
-    return drawLine(['c1', 'c4', 'c7'])
+    return drawLine(['c1', 'c4', 'c7']);
   } else if (board.c2 === "X" && board.c5 === "X" && board.c8 === "X") {
-    return drawLine(['c2', 'c5', 'c8'])
+    return drawLine(['c2', 'c5', 'c8']);
   } else if (board.c3 === "X" && board.c6 === "X" && board.c9 === "X") {
-    return drawLine(['c3', 'c6', 'c9'])
+    return drawLine(['c3', 'c6', 'c9']);
   } else if (board.c1 === "X" && board.c5 === "X" && board.c9 === "X") {
-    return drawLine(['c1', 'c5', 'c9'])
+    return drawLine(['c1', 'c5', 'c9']);
   } else if (board.c3 === "X" && board.c5 === "X" && board.c7 === "X") {
-    return drawLine(['c3', 'c5', 'c7'])
+    return drawLine(['c3', 'c5', 'c7']);
   } else if (board.c1 === "O" && board.c2 === "O" && board.c3 === "O") {
-    return drawLine(['c1', 'c2', 'c3'])
+    return drawLine(['c1', 'c2', 'c3']);
   } else if (board.c4 === "O" && board.c5 === "O" && board.c6 === "O") {
-    return drawLine(['c4', 'c5', 'c6'])
+    return drawLine(['c4', 'c5', 'c6']);
   } else if (board.c7 === "O" && board.c8 === "O" && board.c9 === "O") {
-    return drawLine(['c7', 'c8', 'c9'])
+    return drawLine(['c7', 'c8', 'c9']);
   } else if (board.c1 === "O" && board.c4 === "O" && board.c7 === "O") {
-    return drawLine(['c1', 'c4', 'c7'])
+    return drawLine(['c1', 'c4', 'c7']);
   } else if (board.c2 === "O" && board.c5 === "O" && board.c8 === "O") {
-    return drawLine(['c2', 'c5', 'c8'])
+    return drawLine(['c2', 'c5', 'c8']);
   } else if (board.c3 === "O" && board.c6 === "O" && board.c9 === "O") {
-    return drawLine(['c3', 'c6', 'c9'])
+    return drawLine(['c3', 'c6', 'c9']);
   } else if (board.c1 === "O" && board.c5 === "O" && board.c9 === "O") {
-    return drawLine(['c1', 'c5', 'c9'])
+    return drawLine(['c1', 'c5', 'c9']);
   } else if (board.c3 === "O" && board.c5 === "O" && board.c7 === "O") {
-    return drawLine(['c3', 'c5', 'c7'])
+    return drawLine(['c3', 'c5', 'c7']);
   };
 
   return document.getElementById('line').classList.add('hidden');
-}
+};
 
 function drawLine(cells) {
   const board = document.querySelector('.board');
@@ -155,8 +155,7 @@ function drawLine(cells) {
   setTimeout(() => {
     line.style.transform = `rotate(${angle}deg) scaleX(1)`;
   }, 250);
-}
-
+};
 
 function makeMove(cell) {
   if(mode === '0') {
@@ -210,39 +209,37 @@ function makeMove(cell) {
       checkGameStatus(gameData);
 
       currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-    }
-  }
-}
+    };
+  };
+};
 
 function sendRequest(data, retryCount = 0) {
   isRequestInProgress = true;
   connectionError = false;
 
-  axios.post(`${link}/api/tictactoe`, data)
-    .then(response => {
-      gameData = response.data;
-      updateBoard(gameData.board);
-      checkGameStatus(gameData);
+  axios.post(`${link}/api/tictactoe`, data).then(response => {
+    gameData = response.data;
+    updateBoard(gameData.board);
+    checkGameStatus(gameData);
 
-      if (!win) {
-        currentPlayer = gameData.move === 'X' ? 'O' : 'X';
-      }
+    if (!win) {
+      currentPlayer = gameData.move === 'X' ? 'O' : 'X';
+    };
 
-      isRequestInProgress = false;
-    })
-    .catch(error => {
-      console.error("Request error:", error);
+    isRequestInProgress = false;
+  }).catch(error => {
+    console.error("Request error:", error);
 
-      if (retryCount < 3) {
-        setTimeout(() => {
-          console.log(`Retrying request... Attempt ${retryCount + 1}`);
-          sendRequest(data, retryCount + 1);
-        }, 20000);
-      } else {
-        displayConnectionError(data);
-      }
-    });
-}
+    if (retryCount < 3) {
+      setTimeout(() => {
+        console.log(`Retrying request... Attempt ${retryCount + 1}`);
+        sendRequest(data, retryCount + 1);
+      }, 20000);
+    } else {
+      displayConnectionError(data);
+    };
+  });
+};
 
 function displayConnectionError(data) {
   connectionError = true;
@@ -264,27 +261,26 @@ function displayConnectionError(data) {
 
   endGameContainer.appendChild(retryButton);
   endGameContainer.classList.remove('hidden');
-}
+};
 
 function updateBoard(board) {
   for (let cell in board) {
     const cellElement = document.getElementById(cell);
     if (cellElement) {
-      
       if (board[cell] === 'X') {
         cellElement.classList.add('x');
       } else if (board[cell] === 'O') {
         cellElement.classList.add('o');
       } else {
-        cellElement.classList.remove('x', 'o')
-      }
-    }
-  }
-}
+        cellElement.classList.remove('x', 'o');
+      };
+    };
+  };
+};
 
 function checkGameStatus(gameData) {
   if (gameData.winner || Object.values(gameData.board).every(cell => cell)) {
-    let resultMessage
+    let resultMessage;
     if(mode === '0') {
       resultMessage = gameData.winner === 'X' ? "You Win!" : (gameData.winner === 'O' ? "You Lose!" : "It's a Tie!");
     } else {
@@ -293,11 +289,11 @@ function checkGameStatus(gameData) {
           resultMessage = gameData.winner === 'X' ? "You Win!" : (gameData.winner === 'O' ? "You Lose!" : "It's a Tie!");
         } else {
           resultMessage = gameData.winner === 'X' ? "You Lose!" : (gameData.winner === 'O' ? "You Win!" : "It's a Tie!");
-        }
+        };
       } else {
         resultMessage = gameData.winner === 'X' ? "X Won!" : (gameData.winner === 'O' ? "O Won!" : "It's a Tie!");
-      }
-    }
+      };
+    };
     fetchGame(false);
     
     document.getElementById('result-message').textContent = resultMessage;
@@ -314,8 +310,8 @@ function checkGameStatus(gameData) {
 
     document.getElementById('end-game-container').classList.remove('hidden');
     checkAndDrawLine();
-  }
-}
+  };
+};
 
 function initGame() {
   document.getElementById('difficulty-container').classList.remove('hidden');
@@ -383,64 +379,60 @@ function startNewGame() {
       });
   
       win = false;
-    }
-  }
-}
+    };
+  };
+};
 
 function fetchTokens(retryCount = 0) {
-  axios.post(`${link}/api/generatetoken`)
-    .then(response => {
-      const { publicToken: serverPublicToken, privateToken: serverPrivateToken } = response.data;
+  axios.post(`${link}/api/generatetoken`).then(response => {
+    const { publicToken: serverPublicToken, privateToken: serverPrivateToken } = response.data;
 
-      privateToken = serverPrivateToken;
-      publicToken = serverPublicToken
+    privateToken = serverPrivateToken;
+    publicToken = serverPublicToken;
 
-      const tokenDisplay = `<p id="invitation-code" onclick="copyText()">Invitation Code: <strong>${serverPublicToken}</strong>
-          <span id="invitation-description">Share this code with a friend to start the game!<br>Click to copy</span>
-        </p>`;
+    const tokenDisplay = `<p id="invitation-code" onclick="copyText()">Invitation Code: <strong>${serverPublicToken}</strong>\n  <span id="invitation-description">Share this code with a friend to start the game!<br>Click to copy</span>\n</p>`;
 
-      const tokenContainer = document.getElementById('token-container');
-      tokenContainer.innerHTML = tokenDisplay;
-      tokenContainer.classList.remove('hidden');
+    const tokenContainer = document.getElementById('token-container');
+    tokenContainer.innerHTML = tokenDisplay;
+    tokenContainer.classList.remove('hidden');
 
-      const endGameContainer = document.getElementById('end-game-container');
+    const endGameContainer = document.getElementById('end-game-container');
 
-      endGameContainer.classList.add('hidden');
+    endGameContainer.classList.add('hidden');
 
-      const invitationContainer = document.createElement('div');
-      invitationContainer.id = 'invitation-container';
+    const invitationContainer = document.createElement('div');
+    invitationContainer.id = 'invitation-container';
 
-      const inputField = document.createElement('input');
-      inputField.type = 'text';
-      inputField.id = 'invite-code';
-      inputField.placeholder = 'Enter 6-character code';
-      inputField.style = 'margin-right: 7px'
-      inputField.setAttribute('minlength', '6');
-      inputField.setAttribute('maxlength', '6');
+    const inputField = document.createElement('input');
+    inputField.type = 'text';
+    inputField.id = 'invite-code';
+    inputField.placeholder = 'Enter 6-character code';
+    inputField.style = 'margin-right: 7px'
+    inputField.setAttribute('minlength', '6');
+    inputField.setAttribute('maxlength', '6');
 
-      const verifyButton = document.createElement('button');
-      verifyButton.textContent = 'Verify Code';
-      verifyButton.id = 'verify-code';
+    const verifyButton = document.createElement('button');
+    verifyButton.textContent = 'Verify Code';
+    verifyButton.id = 'verify-code';
 
-      invitationContainer.appendChild(inputField);
-      invitationContainer.appendChild(verifyButton);
-      tokenContainer.appendChild(invitationContainer);
-      verifyButton.addEventListener('click', verifyCode);
-      fetchGame(true);
-    })
-    .catch(error => {
-      console.error("Error fetching tokens:", error);
+    invitationContainer.appendChild(inputField);
+    invitationContainer.appendChild(verifyButton);
+    tokenContainer.appendChild(invitationContainer);
+    verifyButton.addEventListener('click', verifyCode);
+    fetchGame(true);
+  }).catch(error => {
+    console.error("Error fetching tokens:", error);
 
-      if (retryCount < 3) {
-        setTimeout(() => {
-          console.log(`Retrying fetchTokens... Attempt ${retryCount + 1}`);
-          fetchTokens(retryCount + 1);
-        }, 20000);
-      } else {
-        displayRetryButton();
-      }
-    });
-}
+    if (retryCount < 3) {
+      setTimeout(() => {
+        console.log(`Retrying fetchTokens... Attempt ${retryCount + 1}`);
+        fetchTokens(retryCount + 1);
+      }, 20000);
+    } else {
+      displayRetryButton();
+    }
+  });
+};
 
 function fetchGame(start = true, url) {
   if (start) {
@@ -448,12 +440,11 @@ function fetchGame(start = true, url) {
       fetchInterval = setInterval(() => {
         if(privateToken) {
           if(!url) url = `${link}/api/tictactoe/multiplayer/${privateToken}`;
-          axios.get(url)
-          .then(response => {
+          axios.get(url).then(response => {
             gameData = response.data;
 
             updateBoard(gameData.board);
-            checkGameStatus(gameData)
+            checkGameStatus(gameData);
             if(first) {
               const endGameContainer = document.getElementById('end-game-container');
               endGameContainer.classList.add('hidden');
@@ -471,54 +462,51 @@ function fetchGame(start = true, url) {
 
               win = false;
               first = false;
-            }
-          })
-          .catch(error => {
+            };
+          }).catch(error => {
             if (error.response?.data?.success !== false) {
               console.error("Error fetching the game:", error);
             };
           });
-        }
-      }, 5000)
-    }
+        };
+      }, 5000);
+    };
   } else {
     if(fetchInterval) {
       clearInterval(fetchInterval);
       fetchInterval = null;
-    }
-  }
-}
+    };
+  };
+};
 
 function sendMultiplayerRequest(data, gameUrl, retryCount = 0) {
   isRequestInProgress = true;
   connectionError = false;
 
   url = gameUrl ? gameUrl : `${link}/api/tictactoe/multiplayer/${privateToken}`;
-  axios.post(url, data)
-    .then(response => {
-      gameData = response.data;
-      updateBoard(gameData.board);
-      checkGameStatus(gameData);
+  axios.post(url, data).then(response => {
+    gameData = response.data;
+    updateBoard(gameData.board);
+    checkGameStatus(gameData);
 
-      if (!win) {
-        currentPlayer = gameData.move === 'X' ? 'O' : 'X';
-      }
+    if (!win) {
+      currentPlayer = gameData.move === 'X' ? 'O' : 'X';
+    };
 
-      isRequestInProgress = false;
-    })
-    .catch(error => {
-      console.error("Request error:", error);
+    isRequestInProgress = false;
+  }).catch(error => {
+    console.error("Request error:", error);
 
-      if (retryCount < 3) {
-        setTimeout(() => {
-          console.log(`Retrying request... Attempt ${retryCount + 1}`);
-          sendMultiplayerRequest(data, gameUrl, retryCount + 1);
-        }, 20000);
-      } else {
-        displayMultiplayerConnectionError(data, gameUrl);
-      }
-    });
-}
+    if (retryCount < 3) {
+      setTimeout(() => {
+        console.log(`Retrying request... Attempt ${retryCount + 1}`);
+        sendMultiplayerRequest(data, gameUrl, retryCount + 1);
+      }, 20000);
+    } else {
+      displayMultiplayerConnectionError(data, gameUrl);
+    };
+  });
+};
 
 function displayMultiplayerConnectionError(data, gameUrl) {
   connectionError = true;
@@ -540,7 +528,7 @@ function displayMultiplayerConnectionError(data, gameUrl) {
 
   endGameContainer.appendChild(retryButton);
   endGameContainer.classList.remove('hidden');
-}
+};
 
 function verifyCode() {
   const inputField = document.getElementById('invite-code');
@@ -557,7 +545,7 @@ function verifyCode() {
 
     verifyToken(data);
   } else {
-    let textError
+    let textError;
     if(inputValue === publicToken) {
       textError = "You can't play against yourself.";
     } else {
@@ -565,6 +553,50 @@ function verifyCode() {
     };
 
     const tokenContainer = document.getElementById('token-container');
+    
+    if(inputError) {
+      inputError.textContent = textError;
+      inputError.classList.remove('hidden');
+    } else {
+      inputError = document.createElement('p');
+      inputError.id = 'input-error';
+      inputError.textContent = textError;
+      inputError.style = 'color: red; margin-top: 5px';
+
+      tokenContainer.appendChild(inputError);
+    };
+  };
+};
+
+function verifyToken(data, retryCount = 0) {
+  axios.post(`${link}/api/verifycode`, data).then(response => {
+    gameUrl = response.data.url;
+
+    fetchGame(false);
+
+    fetchGame(true, gameUrl);
+
+    startMultiplayerGame(gameData);
+  }).catch(error => {
+    console.error("Request error:", error);
+
+    if (error.response?.data?.errorCode) {
+      let inputError = document.getElementById('input-error');
+      const tokenContainer = document.getElementById('token-container');
+      let textError;
+        
+      if(error.response.data.errorCode === 1) {
+        textError = 'Your private token has expired. Please regenerate it and try again.';
+      } else if (error.response.data.errorCode === 2) {
+        textError = 'Invalid or expired invitation code. Please check the code and try again.';
+      } else if (error.response.data.errorCode === 3) {
+        textError = "You can't play against yourself.";
+      } else if (error.response.data.errorCode === 4) {
+        textError = "The user you are trying to play with is already in another game.";
+      } else {
+        textError = "You are already in a game.";
+      };
+
       if(inputError) {
         inputError.textContent = textError;
         inputError.classList.remove('hidden');
@@ -575,63 +607,18 @@ function verifyCode() {
         inputError.style = 'color: red; margin-top: 5px';
 
         tokenContainer.appendChild(inputError);
-      }
-  }
-}
-
-function verifyToken(data, retryCount = 0) {
-  axios.post(`${link}/api/verifycode`, data)
-    .then(response => {
-      gameUrl = response.data.url;
-
-      fetchGame(false);
-
-      fetchGame(true, gameUrl);
-
-      startMultiplayerGame(gameData);
-    })
-    .catch(error => {
-      console.error("Request error:", error);
-
-      if (error.response?.data?.errorCode) {
+      };
+    } else {
+      if (retryCount < 3) {
+        setTimeout(() => {
+          console.log(`Retrying request... Attempt ${retryCount + 1}`);
+          verifyToken(data, retryCount + 1);
+        }, 20000);
+      } else {
         let inputError = document.getElementById('input-error');
         const tokenContainer = document.getElementById('token-container');
-        let textError;
-        
-        if(error.response.data.errorCode === 1) {
-          textError = 'Your private token has expired. Please regenerate it and try again.';
-        } else if (error.response.data.errorCode === 2) {
-          textError = 'Invalid or expired invitation code. Please check the code and try again.';
-        } else if (error.response.data.errorCode === 3) {
-          textError = "You can't play against yourself.";
-        } else if (error.response.data.errorCode === 4) {
-          textError = "The user you are trying to play with is already in another game.";
-        } else {
-          textError = "You are already in a game.";
-        };
 
         if(inputError) {
-          inputError.textContent = textError;
-          inputError.classList.remove('hidden');
-        } else {
-          inputError = document.createElement('p');
-          inputError.id = 'input-error';
-          inputError.textContent = textError;
-          inputError.style = 'color: red; margin-top: 5px';
-
-          tokenContainer.appendChild(inputError);
-        };
-      } else {
-        if (retryCount < 3) {
-          setTimeout(() => {
-            console.log(`Retrying request... Attempt ${retryCount + 1}`);
-            verifyToken(data, retryCount + 1);
-          }, 20000);
-        } else {
-          let inputError = document.getElementById('input-error');
-          const tokenContainer = document.getElementById('token-container');
-
-          if(inputError) {
           inputError.textContent = 'Failed to verify the code. Please try again.';
           inputError.classList.remove('hidden');
         } else {
@@ -642,10 +629,10 @@ function verifyToken(data, retryCount = 0) {
 
           tokenContainer.appendChild(inputError);
         };
-        }
-      }
-    });
-}
+      };
+    };
+  });
+};
 
 function startMultiplayerGame(data) {
   data.board = {
@@ -667,7 +654,7 @@ function startMultiplayerGame(data) {
   });
 
   win = false;
-}
+};
 
 function displayRetryButton() {
   const endGameContainer = document.getElementById('end-game-container');
@@ -683,7 +670,7 @@ function displayRetryButton() {
   endGameContainer.innerHTML = '<p>Failed to fetch tokens. Please try again.</p>';
   endGameContainer.appendChild(retryButton);
   endGameContainer.classList.remove('hidden');
-}
+};
 
 function restartGame() {
   privateToken = false;
@@ -693,7 +680,7 @@ function restartGame() {
   document.getElementById('end-game-container').classList.add('hidden');
   document.getElementById('line').classList.add('hidden');
   initGame();
-}
+};
 
 function handleModeChange() {
   fetchGame(false);
@@ -706,13 +693,13 @@ function handleModeChange() {
   } else {
     document.getElementById('difficulty').classList.add('hidden');
     document.getElementById('multiplayer').classList.remove('hidden');
-  }
-}
+  };
+};
 
 function clearToken() {
   fetchGame(false);
   document.getElementById('token-container').classList.add('hidden');
-}
+};
 
 function initBoard() {
   const cells = document.querySelectorAll('.cell');
@@ -724,7 +711,7 @@ function initBoard() {
   document.getElementById('mode').addEventListener('change', handleModeChange);
   document.getElementById('difficulty').addEventListener('change', clearToken);
   document.getElementById('multiplayer').addEventListener('change', clearToken);
-}
+};
 
 function copyText() {
   const textToCopy = document.querySelector('strong').textContent;
@@ -734,7 +721,7 @@ function copyText() {
   }).catch(err => {
     console.error('Error copying text: ', err);
   });
-}
+};
 
 initBoard();
 initGame();

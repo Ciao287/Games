@@ -8,6 +8,8 @@ let multiplayer = [];
 
 setInterval(cleanOldTokens, 20 * 60 * 1000);
 
+setInterval(cleanOldGames, 24 * 60 * 60 * 1000);
+
 app.use(express.static('public'))
 app.use(express.json());
 app.set('view engine', 'ejs');
@@ -26,12 +28,19 @@ function cleanOldTokens() {
     const oneHourAgo = currentTime - (60 * 20 * 1000);
 
     tokens = tokens.filter(token => token.time > oneHourAgo);
-}
+};
+
+function cleanOldGames() {
+    const currentTime = Date.now();
+    const oneDayAgo = currentTime - (24 * 60 * 60 * 1000);
+
+    multiplayer = multiplayer.filter(game => game.time > oneDayAgo);
+};
 
 function getRandomBase64Character() {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     return characters.charAt(Math.floor(Math.random() * characters.length));
-}
+};
 
 let tokenCounter = 0;
 
@@ -87,54 +96,54 @@ function generateToken() {
     };
     
     return { bigToken: bigToken, token: token };
-}
+};
 
 function checkAllCellsFilled(board) {
     for (let cell in board) {
         if (board.hasOwnProperty(cell) && board[cell] === false) {
             return false;
-        }
-    }
+        };
+    };
     return true;
 };
 
 function checkWinner(board) {
     if (board.c1 === "X" && board.c2 === "X" && board.c3 === "X") {
-        return "X"
+        return "X";
     } else if (board.c4 === "X" && board.c5 === "X" && board.c6 === "X") {
-        return "X"
+        return "X";
     } else if (board.c7 === "X" && board.c8 === "X" && board.c9 === "X") {
-        return "X"
+        return "X";
     } else if (board.c1 === "X" && board.c4 === "X" && board.c7 === "X") {
-        return "X"
+        return "X";
     } else if (board.c2 === "X" && board.c5 === "X" && board.c8 === "X") {
-        return "X"
+        return "X";
     } else if (board.c3 === "X" && board.c6 === "X" && board.c9 === "X") {
-        return "X"
+        return "X";
     } else if (board.c1 === "X" && board.c5 === "X" && board.c9 === "X") {
-        return "X"
+        return "X";
     } else if (board.c3 === "X" && board.c5 === "X" && board.c7 === "X") {
-        return "X"
+        return "X";
     } else if (board.c1 === "O" && board.c2 === "O" && board.c3 === "O") {
-        return "O"
+        return "O";
     } else if (board.c4 === "O" && board.c5 === "O" && board.c6 === "O") {
-        return "O"
+        return "O";
     } else if (board.c7 === "O" && board.c8 === "O" && board.c9 === "O") {
-        return "O"
+        return "O";
     } else if (board.c1 === "O" && board.c4 === "O" && board.c7 === "O") {
-        return "O"
+        return "O";
     } else if (board.c2 === "O" && board.c5 === "O" && board.c8 === "O") {
-        return "O"
+        return "O";
     } else if (board.c3 === "O" && board.c6 === "O" && board.c9 === "O") {
-        return "O"
+        return "O";
     } else if (board.c1 === "O" && board.c5 === "O" && board.c9 === "O") {
-        return "O"
+        return "O";
     } else if (board.c3 === "O" && board.c5 === "O" && board.c7 === "O") {
-        return "O"
+        return "O";
     };
 
     if (checkAllCellsFilled(board)) {
-        return "Tie"
+        return "Tie";
     };
 
     return false;
@@ -150,7 +159,7 @@ function minimax(board, depth, isMaximizing) {
     const winner = checkWinner(board);
     if (winner !== false) {
         return scores[winner];
-    }
+    };
 
     if (isMaximizing) {
         let bestScore = -Infinity;
@@ -160,8 +169,8 @@ function minimax(board, depth, isMaximizing) {
                 const score = minimax(board, depth + 1, false);
                 board[cell] = false;
                 bestScore = Math.max(bestScore, score);
-            }
-        }
+            };
+        };
         return bestScore;
     } else {
         let bestScore = Infinity;
@@ -171,10 +180,10 @@ function minimax(board, depth, isMaximizing) {
                 const score = minimax(board, depth + 1, true);
                 board[cell] = false;
                 bestScore = Math.min(bestScore, score);
-            }
-        }
+            };
+        };
         return bestScore;
-    }
+    };
 };
 
 function evaluateBoard(board) {
@@ -195,23 +204,19 @@ function evaluateBoard(board) {
 
     for (const pattern of winPatterns) {
         const [a, b, c] = pattern;
-        if ((board[a] === "O" && board[b] === "O" && board[c] === false) ||
-        (board[a] === "O" && board[b] === false && board[c] === "O") ||
-        (board[a] === false && board[b] === "O" && board[c] === "O")) {
+        if ((board[a] === "O" && board[b] === "O" && board[c] === false) || (board[a] === "O" && board[b] === false && board[c] === "O") || (board[a] === false && board[b] === "O" && board[c] === "O")) {
             computerScore = true;
         };
 
-        if ((board[a] === "X" && board[b] === "X" && board[c] === false) ||
-        (board[a] === "X" && board[b] === false && board[c] === "X") ||
-        (board[a] === false && board[b] === "X" && board[c] === "X")) {
+        if ((board[a] === "X" && board[b] === "X" && board[c] === false) || (board[a] === "X" && board[b] === false && board[c] === "X") || (board[a] === false && board[b] === "X" && board[c] === "X")) {
             playerScore = true;
-        }
+        };
         
         if (board[a] === "O" && board[b] === "O" && board[c] === "O") {
-            win = true
-        }
-    }
-    if(win) { return 4 } else if(computerScore && !playerScore) { return 3 } else if(!playerScore) { return 2 } else { return 0 }
+            win = true;
+        };
+    };
+    if(win) { return 4 } else if(computerScore && !playerScore) { return 3 } else if(!playerScore) { return 2 } else { return 0 };
 };
 
 function makeComputerMove(board, difficultyLevel) {
@@ -242,8 +247,8 @@ function makeComputerMove(board, difficultyLevel) {
             const moves = bestMoves.filter(m => m.score === bestScore);
 
             if (moves.length > 0) {
-                const randomIndex = Math.floor(Math.random() * moves.length)
-                const move2 = moves[randomIndex]
+                const randomIndex = Math.floor(Math.random() * moves.length);
+                const move2 = moves[randomIndex];
                 bestMove = move2.cell;
             };
         };
@@ -274,10 +279,10 @@ function makeComputerMove(board, difficultyLevel) {
         };
 
         if (bestMoves.length > 0) {
-            const moves = bestMoves.filter(m => m.score === bestScore)
+            const moves = bestMoves.filter(m => m.score === bestScore);
             if (moves.length > 0) {
-                const randomIndex = Math.floor(Math.random() * moves.length)
-                const move2 = moves[randomIndex]
+                const randomIndex = Math.floor(Math.random() * moves.length);
+                const move2 = moves[randomIndex];
                 bestMove = move2.cell;
             };
         };
@@ -436,7 +441,7 @@ app.post('/api/verifycode', async (req, res) => {
                 errorCode: 3,
                 error: "You can't play against yourself."
             });
-        }
+        };
     } else {
         if(!enemy) {
             return res.status(400).json({
@@ -488,7 +493,7 @@ app.post('/api/tictactoe/multiplayer/:param', async (req, res) => {
             success: false,
             error: 'The game does not exist.'
         });
-    }
+    };
 });
 
 app.get('/api/tictactoe/multiplayer/:param', async (req, res) => {
@@ -502,7 +507,7 @@ app.get('/api/tictactoe/multiplayer/:param', async (req, res) => {
             success: false,
             error: 'The game does not exist.'
         });
-    }
+    };
 });
 
 app.all('*', (req, res) => {
