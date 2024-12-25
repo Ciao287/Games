@@ -409,7 +409,7 @@ app.post('/api/verifycode', async (req, res) => {
                 errorCode: 5,
                 error: "You are already in a game."
             });
-        }
+        };
 
         if(user !== enemy) {
             multiplayer.push({
