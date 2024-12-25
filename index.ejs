@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tic Tac Toe</title>
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" type="text/css" href="/style/style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Tic Tac Toe</h1>
+
+    <div id="difficulty-container" class="hidden">
+      <label for="difficulty">Choose difficulty:</label>
+      <select id="mode">
+        <option value="0">Single Player</option>
+        <option value="1">Multiplayer</option>
+      </select>
+      <select id="difficulty">
+        <option value="0">Easy</option>
+        <option value="1">Medium</option>
+        <option value="2">Hard</option>
+      </select>
+      <select id="multiplayer" class="hidden">
+        <option value="0">Classic</option>
+        <option value="1">Pass and Play</option>
+      </select>
+      <button id="start-game">Start Game</button>
+    </div>
+    <div id="token-container" class="hidden">
+      <div id="invitation-container">
+      </div>
+    </div>
+    <div id="board-container" class="hidden">
+      <div class="board" id="board">
+        <div class="gridline horizontal" id="line1"></div>
+        <div class="gridline horizontal" id="line2"></div>
+        <div class="gridline vertical" id="line3"></div>
+        <div class="gridline vertical" id="line4"></div>
+        <div class="cell tl" id="c1"></div>
+        <div class="cell" id="c2"></div>
+        <div class="cell tr" id="c3"></div>
+        <div class="cell" id="c4"></div>
+        <div class="cell" id="c5"></div>
+        <div class="cell" id="c6"></div>
+        <div class="cell bl" id="c7"></div>
+        <div class="cell" id="c8"></div>
+        <div class="cell br" id="c9"></div>
+        <div id="line" class="hidden"></div>
+      </div>
+    </div>
+
+    <div id="end-game-container" class="hidden">
+      <p id="result-message"></p>
+      <button id="restart-game">Play Again</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    const link = "<%= link %>";
+  </script>
+  <script src="/script/script.js"></script>
+</body>
+</html>
