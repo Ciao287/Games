@@ -602,8 +602,12 @@ function verifyToken(data, retryCount = 0) {
           textError = 'Your private token has expired. Please regenerate it and try again.';
         } else if (error.response.data.errorCode === 2) {
           textError = 'Invalid or expired invitation code. Please check the code and try again.';
-        } else {
+        } else if (error.response.data.errorCode === 3) {
           textError = "You can't play against yourself.";
+        } else if (error.response.data.errorCode === 4) {
+          textError = "The user you are trying to play with is already in another game.";
+        } else {
+          textError = "You are already in a game.";
         };
 
         if(inputError) {

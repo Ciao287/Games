@@ -392,6 +392,25 @@ app.post('/api/verifycode', async (req, res) => {
     const enemy = tokens.find(obj => obj.privateToken === privateToken);
 
     if (user && enemy) {
+        const isUserInGame = multiplayer.find(obj => obj.x === user.privateToken || obj.o === user.privateToken);
+        const isEnemyInGame = multiplayer.find(obj => obj.x === enemy.privateToken || obj.o === enemy.privateToken);
+        
+        if(isUserInGame) {
+            return res.status(400).json({
+                success: false,
+                errorCode: 4,
+                error: "The user you are trying to play with is already in another game."
+            });
+        };
+
+        if(isEnemyInGame) {
+            return res.status(400).json({
+                success: false,
+                errorCode: 5,
+                error: "You are already in a game."
+            });
+        }
+
         if(user !== enemy) {
             multiplayer.push({
                 time: Date.now(),
