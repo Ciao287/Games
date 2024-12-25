@@ -10,7 +10,7 @@ The [demo site](https://tictactoe.is-a.dev) was created to give you an idea of â
 
 ## How to Install
 
-1) Install [node.js](https://nodejs.org/en/download/package-manager/current);
+1) If you don't have it already, install [Node.js](https://nodejs.org/en/download/package-manager/current) and [Git](https://git-scm.com/downloads);
 2) Open terminal in the folder where you want to install TicTacToe and run `git clone https://github.com/Ciao287/TicTacToe`;
 3) Open the [config.json](https://github.com/Ciao287/TicTacToe/blob/main/config.json) file, change the `link` value, inserting the complete link that the site will have and the `port` value, inserting the site port;
 4) Type `npm install` in the terminal;
