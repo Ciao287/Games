@@ -61,7 +61,7 @@ This will return the URL to request to update game parameters:
 ```js
 {
   success: true,
-  url: `${link}/api/tictactoe/multiplayer/${user.privateToken}` //`link` is taken from [config.json](https://github.com/Ciao287/TicTacToe/blob/main/config.json), while `user.privateToken` is the private token of the user you want to play with
+  url: `${link}/api/tictactoe/multiplayer/${user.privateToken}` //`link` is taken from config.json => (https://github.com/Ciao287/TicTacToe/blob/main/config.json), while `user.privateToken` is the private token of the user you want to play with
 }
 ```
 4) Via GET request `/api/tictactoe/multiplayer/PRIVATE_TOKEN` you will receive the data of that match:
