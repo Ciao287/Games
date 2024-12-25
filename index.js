@@ -26,7 +26,6 @@ function cleanOldTokens() {
     const oneHourAgo = currentTime - (60 * 20 * 1000);
 
     tokens = tokens.filter(token => token.time > oneHourAgo);
-    // console.log('Old tokens cleaned. Remaining tokens:', tokens.length);
 }
 
 function getRandomBase64Character() {
@@ -74,8 +73,7 @@ function generateToken() {
     } else if(newCounterBase64.endsWith("=")) {
         newCounterBase64 = newCounterBase64.slice(0, -2) + getRandomBase64Character();
     };
-    
-    // const token = (newCounterBase64 + getRandomBase64Character() + getRandomBase64Character()).slice(0, 6);
+
     let token
     if(newCounterBase64.length < 6) {
         token = newCounterBase64;
@@ -90,8 +88,6 @@ function generateToken() {
     
     return { bigToken: bigToken, token: token };
 }
-
-// console.log(generateToken())
 
 function checkAllCellsFilled(board) {
     for (let cell in board) {
@@ -311,7 +307,6 @@ function makeComputerMove(board, difficultyLevel) {
 
 app.get('/', async (req, res) => {
     const file = path.join(__dirname, './', `index.html`);
-    // res.sendFile(file)
     res.render('index.ejs', {link});
 });
 
@@ -377,7 +372,7 @@ app.post('/api/tictactoe', async (req, res) => {
 
 app.post('/api/generatetoken', async (req, res) => {
     const { bigToken, token } = generateToken();
-    // console.log(bigToken, token)
+
     tokens.push({
         time: Date.now(),
         publicToken: token,
@@ -395,8 +390,7 @@ app.post('/api/verifycode', async (req, res) => {
     
     const user = tokens.find(obj => obj.publicToken === code);
     const enemy = tokens.find(obj => obj.privateToken === privateToken);
-    // console.log(code, user, enemy);
-    // console.log(`http://localhost:${port}/api/tictactoe/multiplayer/${user.privateToken}`)
+
     if (user && enemy) {
         if(user !== enemy) {
             multiplayer.push({
@@ -454,9 +448,7 @@ app.post('/api/tictactoe/multiplayer/:param', async (req, res) => {
             return res.status(200).json(req.body);
         };
 
-        let newCurrentPlayer;
-        // if(currentPlayer === 'X') { newCurrentPlayer = 'O' } else { newCurrentPlayer = 'X' };
-        newCurrentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+        let newCurrentPlayer = currentPlayer === 'X' ? 'O' : 'X';
         
         game.board = board;
         game.move = move;

@@ -150,7 +150,6 @@ function drawLine(cells) {
   line.style.top = `${centeredY}px`;
   line.style.left = `${x1}px`;
   line.style.transform = `rotate(${angle}deg) scaleX(0)`;
-  // if(gameData.winner === 'X') { line.style.backgroundColor = 'rgb(255, 0, 0, 1)' } else { line.style.backgroundColor = 'rgb(0, 0, 255, 1)' }
   line.classList.remove('hidden');
 
   setTimeout(() => {
@@ -176,7 +175,6 @@ function makeMove(cell) {
     sendRequest(gameData);
   } else {
     if (multiplayer === '0') {
-      // console.log('ciao')
       if (win) return;
 
       if (gameData.board[cell]) {
@@ -184,7 +182,6 @@ function makeMove(cell) {
       };
 
       const {x, o, currentPlayer} = gameData;
-      // console.log(gameData, currentPlayer, privateToken, x, o)
 
       if((currentPlayer === 'X' && x === privateToken) || (currentPlayer === 'O' && o === privateToken)) {
         gameData.move = cell;
@@ -211,7 +208,7 @@ function makeMove(cell) {
 
       gameData.winner = checkWinner();
       checkGameStatus(gameData);
-      // if(currentPlayer === 'X') { currentPlayer = 'O' } else { currentPlayer = 'X' };
+
       currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
     }
   }
@@ -220,7 +217,7 @@ function makeMove(cell) {
 function sendRequest(data, retryCount = 0) {
   isRequestInProgress = true;
   connectionError = false;
-  // console.log(data)
+
   axios.post(`${link}/api/tictactoe`, data)
     .then(response => {
       gameData = response.data;
@@ -275,13 +272,10 @@ function updateBoard(board) {
     if (cellElement) {
       
       if (board[cell] === 'X') {
-        // cellElement.textContent = 'X';
         cellElement.classList.add('x');
       } else if (board[cell] === 'O') {
-        // cellElement.textContent = 'O';
         cellElement.classList.add('o');
       } else {
-        // cellElement.textContent = '';
         cellElement.classList.remove('x', 'o')
       }
     }
@@ -447,7 +441,7 @@ function fetchTokens(retryCount = 0) {
       }
     });
 }
-// fetchGame()
+
 function fetchGame(start = true, url) {
   if (start) {
     if(!fetchInterval) {
@@ -457,7 +451,7 @@ function fetchGame(start = true, url) {
           axios.get(url)
           .then(response => {
             gameData = response.data;
-            // console.log(gameData)
+
             updateBoard(gameData.board);
             checkGameStatus(gameData)
             if(first) {
@@ -498,8 +492,7 @@ function fetchGame(start = true, url) {
 function sendMultiplayerRequest(data, gameUrl, retryCount = 0) {
   isRequestInProgress = true;
   connectionError = false;
-  // console.log(data)
-  // if(gameUrl) url = gameUrl
+
   url = gameUrl ? gameUrl : `${link}/api/tictactoe/multiplayer/${privateToken}`;
   axios.post(url, data)
     .then(response => {
@@ -552,10 +545,10 @@ function displayMultiplayerConnectionError(data, gameUrl) {
 function verifyCode() {
   const inputField = document.getElementById('invite-code');
   let inputError = document.getElementById('input-error');
-  // console.log(inputError)
+
   if(inputError) inputError.classList.add('hidden');
   const inputValue = inputField.value;
-  // console.log(inputValue, publicToken)
+  
   if (inputValue.length === 6 && inputValue !== publicToken) {
     data = {
       code: inputValue,
