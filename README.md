@@ -2,98 +2,98 @@
 
 Demo: [https://tictactoe.is-a.dev](https://tictactoe.is-a.dev)
 
-TicTacToe è un progetto fatto per High Seas - Hack Club, ti permette di giocare a TicTacToe in single player contro il bot, con 3 modalità (Easy, Medium ed Hard) ed in multiplayer, con 2 modalità (Classic => si gioca con 2 dispositivi, Pass and Play => si gioca dallo stesso dispositivo).
+TicTacToe is a project made for High Seas - Hack Club, it allows you to play TicTacToe in single player against the bot, with 3 modes (Easy, Medium and Hard) and in multiplayer, with 2 modes (Classic => you play with 2 devices, Pass and Play => you play from the same device).
 
-TicTacToe è pensato per essere utilizzato dappertutto, su siti web, su app, anche su bot Discord, grazie alla sua api.
+TicTacToe is designed to be used everywhere, on websites, in apps, even in Discord bots, thanks to its API.
 
-Il [sito demo](https://tictactoe.is-a.dev) è stato creato per darvi un'idea di cosa si può fare con questa api, potete facilmente customizzarlo modificando i file [index.ejs](https://github.com/Ciao287/TicTacToe/blob/main/index.ejs), tutti i file nella cartella [public](https://github.com/Ciao287/TicTacToe/tree/main/public) e, in caso si vogliano aggiungere nuovi link [index.js](https://github.com/Ciao287/TicTacToe/blob/main/index.js).
+The [demo site](https://tictactoe.is-a.dev) was created to give you an idea of ​​what can be done with this api, you can easily customize it by modifying the [index.ejs](https://github.com/Ciao287/TicTacToe/blob/main/index.ejs) file, all the files in the [public](https://github.com/Ciao287/TicTacToe/tree/main/public) folder and, in case you want to add new links, [index.js](https://github.com/Ciao287/TicTacToe/blob/main/index.js).
 
-## Come Installare
+## How to Install
 
-1) Installare [node.js](https://nodejs.org/en/download/package-manager/current);
-2) aprire il terminale nella cartella in cui si desidera installare TicTacToe ed eseguire `git clone https://github.com/Ciao287/TicTacToe`;
-3) Aprire il file [config.json](https://github.com/Ciao287/TicTacToe/blob/main/config.json), modificare i valori `link`, inserendo il link completo che il sito avrà e `port`, inserendo la porta del sito;
-4) Digitare nel terminale `npm install`;
-5) Digitare nel terminale `node .` per avviare il sito.
+1) Install [node.js](https://nodejs.org/en/download/package-manager/current);
+2) Open terminal in the folder where you want to install TicTacToe and run `git clone https://github.com/Ciao287/TicTacToe`;
+3) Open the [config.json](https://github.com/Ciao287/TicTacToe/blob/main/config.json) file, change the `link` value, inserting the complete link that the site will have and the `port` value, inserting the site port;
+4) Type `npm install` in the terminal;
+5) Type `node .` in the terminal to start the site.
 
-## Come Funziona L'Api
+## How the API Works
 
-1) Tramite richiesta POST `/api/tictactoe`, inviando come body:
+1) Via POST request `/api/tictactoe`, sending as body:
 ```js
 {
-  difficulty: 2, //Un numero da 1 a 3
+  difficulty: 2, //A number from 1 to 3
   board: {
     c1: 'X', c2: 'O, c3: 'X',
     c4: false, c5: 'O', c6: false,
     c7: false, c8: false, c9: 'X'
-  } //I valori possono essere false, 'X' o 'O'
+  } //Values ​​can be false, 'X' or 'O'
 }
 ```
-Restituirà la mossa del bot, in base alla difficoltà:
+It will return the bot's move, based on the difficulty:
 ```js
 {
   success: true,
-  difficulty: 2, //Un numero da 1 a 3,
+  difficulty: 2, //A number from 1 to 3
   board: {
     c1: 'X', c2: 'O', c3: 'X',
     c4: false, c5: 'O', c6: false,
     c7: false, c8: 'O', c9: 'X'
-  }, //I valori possono essere false, 'X' o 'O'
-  move: 'c8', //I valori possono essere da 'c1' a 'c9'
-  winner: 'O' //I valori posono essere false, 'X' o 'O'
+  }, //Values ​​can be false, 'X' or 'O'
+  move: 'c8', //Values ​​can be from 'c1' to 'c9'
+  winner: 'O' //Values ​​can be false, 'X' or 'O'
 }
 ```
-2) Tramite richiesta POST `/api/generatetoken` riceverai i token pubblici e privati, necessari per le partite Multiplayer Classiche:
+2) Via POST request `/api/generatetoken` you will receive public and private tokens, needed for Classic Multiplayer games:
 ```js
 {
-  publicToken: 'MQKqQS', //Token di 6 caratteri
-  privateToken: 'MTczNTA5MTc5MDg3NQ6DMAKd' //Token di 24 caratteri
+  publicToken: 'MQKqQS', //6 character token
+  privateToken: 'MTczNTA5MTc5MDg3NQ6DMAKd' //24 character token
 }
 ```
-3) Tramite richiesta POST `/api/verifycode`, inviando come body:
+3) Via POST request `/api/verifycode`, sending as body:
 ```js
 {
-  code: 'MQKqQS', //Token pubblico dello sfidante
-  privateToken: 'MTczNTA5MTc5MDg3NQ6DMAKd' //Il tuo token privato
+  code: 'MQKqQS', //Public token of the person you want to play with
+  privateToken: 'MTczNTA5MTc5MDg3NQ6DMAKd' //Your private token
 }
 ```
-Restituirà l'url a cui fare richiesta per aggiornare i parametri di gioco:
+This will return the URL to request to update game parameters:
 ```js
 {
   success: true,
-  url: `${link}/api/tictactoe/multiplayer/${user.privateToken}` //`link` viene preso da [config.json](https://github.com/Ciao287/TicTacToe/blob/main/config.json), mentre `user.privateToken` è il token privato dell'utente con cui vuoi giocare
+  url: `${link}/api/tictactoe/multiplayer/${user.privateToken}` //`link` is taken from [config.json](https://github.com/Ciao287/TicTacToe/blob/main/config.json), while `user.privateToken` is the private token of the user you want to play with
 }
 ```
-4) Tramite richiesta GET `/api/tictactoe/multiplayer/PRIVATE_TOKEN` riceverai i dati di quella partita:
+4) Via GET request `/api/tictactoe/multiplayer/PRIVATE_TOKEN` you will receive the data of that match:
 ```js
 {
-  time: 1735124400000, //Timestamp in ms ottenuto dalla richiesta GET su `/api/tictactoe/multiplayer/PRIVATE_TOKEN`
-  x: 'MTczNTA5MTc5MDg3NQ6DMAKd', //Token privato dell'utente X
-  o: 'MTczNTA5Mjg1OTcxOA6CMAvR', //Token privato dell'utente O
+  time: Date.now(), //Timestamp in ms
+  x: 'MTczNTA5MTc5MDg3NQ6DMAKd', //User X's private token
+  o: 'MTczNTA5Mjg1OTcxOA6CMAvR', //User O's private token
   board: {
     c1: 'X', c2: 'O', c3: 'X',
     c4: false, c5: 'O', c6: false,
     c7: false, c8: false, c9: 'X'
-  }, //I valori possono essere false, 'X' o 'O'
-  currentPlayer: 'O', //I valori possono essere 'X' o 'O'
-  move: 'c9', //I valori possono essere da 'c1' a 'c9'
-  winner: false //I valori posono essere false, 'X' o 'O'
+  }, //Values ​​can be false, 'X' or 'O'
+  currentPlayer: 'O', //Values ​​can be 'X' or 'O'
+  move: 'c9', //Values ​​can be from 'c1' to 'c9'
+  winner: false //Values ​​can be false, 'X' or 'O'
 }
 ```
-5) Tramite richiesta POST `/api/tictactoe/multiplayer/PRIVATE_TOKEN`, inviando come body:
+5) Via POST request `/api/tictactoe/multiplayer/PRIVATE_TOKEN`, sending as body:
 ```js
 {
-  time: 1735124400000, //Timestamp in ms ottenuto dalla richiesta GET su `/api/tictactoe/multiplayer/PRIVATE_TOKEN`
-  x: 'MTczNTA5MTc5MDg3NQ6DMAKd', //Token privato dell'utente X
-  o: 'MTczNTA5Mjg1OTcxOA6CMAvR', //Token privato dell'utente O
+  time: 1735124400000, //Timestamp in ms obtained from GET request on `/api/tictactoe/multiplayer/PRIVATE_TOKEN`
+  x: 'MTczNTA5MTc5MDg3NQ6DMAKd', //User X's private token
+  o: 'MTczNTA5Mjg1OTcxOA6CMAvR', //User O's private token
   board: {
     c1: 'X', c2: 'O', c3: 'X',
     c4: false, c5: 'O', c6: false,
     c7: false, c8: false, c9: 'X'
-  }, //I valori possono essere false, 'X' o 'O'
-  currentPlayer: 'O', //I valori possono essere 'X' o 'O'
-  move: 'c9', //I valori possono essere da 'c1' a 'c9'
-  winner: false //I valori posono essere false, 'X' o 'O'
+  }, //Values ​​can be false, 'X' or 'O'
+  currentPlayer: 'O', //Values ​​can be 'X' or 'O'
+  move: 'c9', //Values ​​can be from 'c1' to 'c9'
+  winner: false //Values ​​can be false, 'X' or 'O'
 }
 ```
-La risposta sarà uguale al body inviato, tranne che cambierà `currentPlayer` ed in caso di vittoria `winner` diventerà `'X'` o `'O'`
+The response will be the same as the body sent, except that `currentPlayer` will change and in case of victory `winner` will become `'X'` or `'O'`.
