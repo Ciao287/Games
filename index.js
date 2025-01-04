@@ -1,4 +1,4 @@
-const express = require('expresss');
+const express = require('express');
 const app = express();
 const path = require("path");
 const { link, port } = require('./config.json');
