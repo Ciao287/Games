@@ -311,8 +311,12 @@ function makeComputerMove(board, difficultyLevel) {
 };
 
 app.get('/', async (req, res) => {
-    const file = path.join(__dirname, './', `index.html`);
+    // const file = path.join(__dirname, './', `index.html`);
     res.render('index.ejs', {link});
+});
+
+app.get('/tictactoe', async (req, res) => {
+    res.render('tictactoe.ejs', {link});
 });
 
 app.post('/api/tictactoe', async (req, res) => {
