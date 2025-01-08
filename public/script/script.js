@@ -253,14 +253,17 @@ function displayConnectionError(data) {
   retryButton.textContent = "Retry";
   retryButton.id = "retry-button";
   const endGameContainer = document.getElementById('end-game-container');
+  const gotoHomeButton = document.getElementById('go-home-button');
   retryButton.onclick = () => {
     retryButton.remove();
     endGameContainer.classList.add('hidden');
+    gotoHomeButton.classList.add('hidden');
     sendRequest(data);
   };
 
   endGameContainer.appendChild(retryButton);
   endGameContainer.classList.remove('hidden');
+  gotoHomeButton.classList.remove('hidden');
 };
 
 function updateBoard(board) {
@@ -309,6 +312,7 @@ function checkGameStatus(gameData) {
     if (retryButton) retryButton.remove();
 
     document.getElementById('end-game-container').classList.remove('hidden');
+    document.getElementById('go-home-button').classList.remove('hidden');
     checkAndDrawLine();
   };
 };
@@ -317,6 +321,7 @@ function initGame() {
   document.getElementById('difficulty-container').classList.remove('hidden');
   document.getElementById('board-container').classList.add('hidden');
   document.getElementById('end-game-container').classList.add('hidden');
+  document.getElementById('go-home-button').classList.remove('hidden');
   win = false;
   isRequestInProgress = false;
   connectionError = false;
@@ -332,6 +337,7 @@ function initGame() {
 };
 
 function startNewGame() {
+  document.getElementById('go-home-button').classList.add('hidden');
   fetchGame(false);
   mode = document.getElementById('mode').value;
   if(mode === '0') {
@@ -396,9 +402,8 @@ function fetchTokens(retryCount = 0) {
     tokenContainer.innerHTML = tokenDisplay;
     tokenContainer.classList.remove('hidden');
 
-    const endGameContainer = document.getElementById('end-game-container');
-
-    endGameContainer.classList.add('hidden');
+    document.getElementById('end-game-container').classList.add('hidden');
+    document.getElementById('go-home-button').classList.add('hidden');
 
     const invitationContainer = document.createElement('div');
     invitationContainer.id = 'invitation-container';
@@ -446,8 +451,8 @@ function fetchGame(start = true, url) {
             updateBoard(gameData.board);
             checkGameStatus(gameData);
             if(first) {
-              const endGameContainer = document.getElementById('end-game-container');
-              endGameContainer.classList.add('hidden');
+              document.getElementById('end-game-container').classList.add('hidden');
+              document.getElementById('go-home-button').classList.add('hidden');
 
               document.getElementById('difficulty-container').classList.add('hidden');
               document.getElementById('token-container').classList.add('hidden');
@@ -520,14 +525,17 @@ function displayMultiplayerConnectionError(data, gameUrl) {
   retryButton.textContent = "Retry";
   retryButton.id = "retry-button";
   const endGameContainer = document.getElementById('end-game-container');
+  const gotoHomeButton = document.getElementById('go-home-button');
   retryButton.onclick = () => {
     retryButton.remove();
     endGameContainer.classList.add('hidden');
+    gotoHomeButton.classList.add('hidden');
     sendMultiplayerRequest(data, gameUrl);
   };
 
   endGameContainer.appendChild(retryButton);
   endGameContainer.classList.remove('hidden');
+  gotoHomeButton.classList.remove('hidden');
 };
 
 function verifyCode() {
@@ -658,18 +666,21 @@ function startMultiplayerGame(data) {
 
 function displayRetryButton() {
   const endGameContainer = document.getElementById('end-game-container');
+  const gotoHomeButton = document.getElementById('go-home-button');
   const retryButton = document.createElement('button');
   retryButton.textContent = "Retry Fetching Tokens";
   retryButton.id = "retry-fetch-tokens";
 
   retryButton.onclick = () => {
     endGameContainer.classList.add('hidden');
+    gotoHomeButton.classList.add('hidden');
     fetchTokens();
   };
 
   endGameContainer.innerHTML = '<p>Failed to fetch tokens. Please try again.</p>';
   endGameContainer.appendChild(retryButton);
   endGameContainer.classList.remove('hidden');
+  gotoHomeButton.classList.remove('hidden');
 };
 
 function restartGame() {
@@ -678,6 +689,7 @@ function restartGame() {
   gameUrl = false;
   first = true;
   document.getElementById('end-game-container').classList.add('hidden');
+  // document.getElementById('go-home-button').classList.add('hidden');
   document.getElementById('line').classList.add('hidden');
   initGame();
 };
@@ -721,6 +733,10 @@ function copyText() {
   }).catch(err => {
     console.error('Error copying text: ', err);
   });
+};
+
+document.getElementById('go-home-button').onclick = function() {
+  window.location.href = '/';
 };
 
 initBoard();
