@@ -310,6 +310,33 @@ function makeComputerMove(board, difficultyLevel) {
     return {newBoard: board, move: move};
 };
 
+function checkWinnerRPSLS(u, e) {
+    if (u === e) return {
+        winner: "Tie",
+        message: "It's a tie!"
+    };
+
+    const winMap = {
+        'scissors': { 'paper': 'Scissors cuts Paper', 'lizard': 'Scissors decapitates Lizard' },
+        'paper': { 'rock': 'Paper covers Rock', 'spock': 'Paper disproves Spock' },
+        'rock': { 'lizard': 'Rock crushes Lizard', 'scissors': 'Rock crushes Scissors' },
+        'lizard': { 'spock': 'Lizard poisons Spock', 'paper': 'Lizard eats Paper' },
+        'spock': { 'scissors': 'Spock smashes Scissors', 'rock': 'Spock vaporizes Rock' }
+    };
+
+    if (winMap[u] && winMap[u][e]) {
+        return {
+            winner: "Win",
+            message: winMap[u][e]
+        };
+    } else {
+        return {
+            winner: "Lose",
+            message: winMap[e][u]
+        };
+    }
+}
+
 app.get('/', async (req, res) => {
     // const file = path.join(__dirname, './', `index.html`);
     res.render('index.ejs', {link});
@@ -512,6 +539,47 @@ app.get('/api/tictactoe/multiplayer/:param', async (req, res) => {
             error: 'The game does not exist.'
         });
     };
+});
+
+app.post('/api/rpsls', async (req, res) => {
+    const { user, computer, winner } = req.body;
+    const choice = user.toLowerCase();
+    const computerChoice = computer.toLowerCase();
+    const validChoices = ['rock', 'paper', 'scissors', 'lizard', 'spock'];
+
+    if (winner) {
+        return res.status(200).json(req.body);
+    };
+
+    if (!validChoices.includes(choice)) {
+        return res.status(400).json({
+            success: false,
+            error: 'The choice must be a string and must be one of the following: rock, paper, scissors, lizard, spock.'
+        });
+    };
+
+    if (validChoices.includes(computerChoice)) {
+        const { winner, message } = checkWinnerRPSLS(choice, computerChoice);
+        
+        res.status(200).json({
+            success: true,
+            user: choice,
+            computer: computerChoice,
+            winner: winner,
+            message: message
+        });
+    };
+
+    const randomChoice = validChoices[Math.floor(Math.random() * validChoices.length)];
+    const { NewWinner, message } = checkWinnerRPSLS(choice, randomChoice);
+
+    res.status(200).json({
+        success: true,
+        user: choice,
+        computer: randomChoice,
+        winner: NewWinner,
+        message: message
+    });
 });
 
 app.all('*', (req, res) => {
