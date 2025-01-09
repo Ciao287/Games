@@ -560,7 +560,7 @@ app.post('/api/rpsls', async (req, res) => {
 
     if (validChoices.includes(computerChoice)) {
         const { winner, message } = checkWinnerRPSLS(choice, computerChoice);
-        
+
         res.status(200).json({
             success: true,
             user: choice,
@@ -571,13 +571,13 @@ app.post('/api/rpsls', async (req, res) => {
     };
 
     const randomChoice = validChoices[Math.floor(Math.random() * validChoices.length)];
-    const { NewWinner, message } = checkWinnerRPSLS(choice, randomChoice);
+    const { newWinner, message } = checkWinnerRPSLS(choice, randomChoice);
 
     res.status(200).json({
         success: true,
         user: choice,
         computer: randomChoice,
-        winner: NewWinner,
+        winner: newWinner,
         message: message
     });
 });
