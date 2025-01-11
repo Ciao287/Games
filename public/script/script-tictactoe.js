@@ -390,7 +390,7 @@ function startNewGame() {
 };
 
 function fetchTokens(retryCount = 0) {
-  axios.post(`${link}/api/generatetoken`).then(response => {
+  axios.post(`${link}/api/generatetoken?tictactoe`).then(response => {
     const { publicToken: serverPublicToken, privateToken: serverPrivateToken } = response.data;
 
     privateToken = serverPrivateToken;
@@ -403,7 +403,7 @@ function fetchTokens(retryCount = 0) {
     tokenContainer.classList.remove('hidden');
 
     document.getElementById('end-game-container').classList.add('hidden');
-    document.getElementById('go-home-button').classList.add('hidden');
+    document.getElementById('go-home-button').classList.remove('hidden');
 
     const invitationContainer = document.createElement('div');
     invitationContainer.id = 'invitation-container';
@@ -601,8 +601,10 @@ function verifyToken(data, retryCount = 0) {
         textError = "You can't play against yourself.";
       } else if (error.response.data.errorCode === 4) {
         textError = "The user you are trying to play with is already in another game.";
-      } else {
+      } else if (error.response.data.errorCode === 5) {
         textError = "You are already in a game.";
+      } else {
+        textError = "The user you are trying to play with is playing a different game.";
       };
 
       if(inputError) {

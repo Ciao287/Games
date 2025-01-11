@@ -3,24 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tic Tac Toe</title>
+  <title>Rock Paper Scissors Lizard Spock</title>
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
   <link rel="stylesheet" type="text/css" href="/style/style.css">
 </head>
 <body>
   <div class="container">
-    <h1>Tic Tac Toe</h1>
+    <h1>Rock Paper Scissors Lizard Spock</h1>
 
     <div id="difficulty-container" class="hidden">
       <label for="difficulty">Choose difficulty:</label>
       <select id="mode">
         <option value="0">Single Player</option>
         <option value="1">Multiplayer</option>
-      </select>
-      <select id="difficulty">
-        <option value="0">Easy</option>
-        <option value="1">Medium</option>
-        <option value="2">Hard</option>
       </select>
       <select id="multiplayer" class="hidden">
         <option value="0">Classic</option>
@@ -32,7 +27,7 @@
       <div id="invitation-container">
       </div>
     </div>
-    <div id="board-container" class="hidden">
+    <!-- <div id="board-container" class="hidden">
       <div class="board" id="board">
         <div class="gridline horizontal" id="line1"></div>
         <div class="gridline horizontal" id="line2"></div>
@@ -49,7 +44,7 @@
         <div class="cell br" id="c9"></div>
         <div id="line" class="hidden"></div>
       </div>
-    </div>
+    </div> -->
 
     <div id="end-game-container" class="hidden">
       <p id="result-message"></p>
@@ -64,6 +59,6 @@
   <script>
     const link = "<%= link %>";
   </script>
-  <script src="/script/script-tictactoe.js"></script>
+  <script src="/script/script-rpsls.js"></script>
 </body>
 </html>

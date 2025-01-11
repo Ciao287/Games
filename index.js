@@ -339,11 +339,15 @@ function checkWinnerRPSLS(u, e) {
 
 app.get('/', async (req, res) => {
     // const file = path.join(__dirname, './', `index.html`);
-    res.render('index.ejs', {link});
+    res.render('index.ejs');
 });
 
 app.get('/tictactoe', async (req, res) => {
     res.render('tictactoe.ejs', {link});
+});
+
+app.get('/rpsls', async (req, res) => {
+    res.render('rpsls.ejs', {link});
 });
 
 app.post('/api/tictactoe', async (req, res) => {
@@ -409,11 +413,24 @@ app.post('/api/tictactoe', async (req, res) => {
 app.post('/api/generatetoken', async (req, res) => {
     const { bigToken, token } = generateToken();
 
-    tokens.push({
+    const tokenData = {
         time: Date.now(),
         publicToken: token,
         privateToken: bigToken
-    });
+    }
+
+    if('tictactoe' in req.query) {
+        tokenData.type = 'tictactoe';
+    } else if('rpsls' in req.query) {
+        tokenData.type = 'rpsls';
+    } else {
+        return res.status(400).json({
+            success: false,
+            error: 'Invalid or missing query string. Please provide a valid query string.'
+        });
+    };
+
+    tokens.push(tokenData);
 
     res.status(200).json({
         publicToken: token,
@@ -426,6 +443,14 @@ app.post('/api/verifycode', async (req, res) => {
     
     const user = tokens.find(obj => obj.publicToken === code);
     const enemy = tokens.find(obj => obj.privateToken === privateToken);
+
+    if (user.type !== enemy.type) {
+        return res.status(400).json({
+            success: false,
+            errorCode: 6,
+            error: "The user you are trying to play with is playing a different game."
+        });
+    }
 
     if (user && enemy) {
         const isUserInGame = multiplayer.find(obj => obj.x === user.privateToken || obj.o === user.privateToken);
