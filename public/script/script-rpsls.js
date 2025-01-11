@@ -1,7 +1,7 @@
 let gameData = {
     success: true,
     user: false,
-    computer: false,
+    enemy: false,
     winner: false,
     message: false
 };
@@ -17,9 +17,9 @@ let gameUrl = false;
 let first = true;
 
 function checkWinner() {
-    let { user, computer } = gameData;
+    let { user, enemy } = gameData;
 
-    if (user === computer) return {
+    if (user === enemy) return {
         winner: "Tie",
         message: "It's a tie!"
     };
@@ -32,102 +32,115 @@ function checkWinner() {
         'spock': { 'scissors': 'Spock smashes Scissors', 'rock': 'Spock vaporizes Rock' }
     };
 
-    if (winMap[user] && winMap[user][computer]) {
+    if (winMap[user] && winMap[user][enemy]) {
         return {
             winner: "Win",
-            message: winMap[user][computer]
+            message: winMap[user][enemy]
         };
     } else {
         return {
             winner: "Lose",
-            message: winMap[computer][user]
+            message: winMap[enemy][user]
         };
     }
 };
 
-// function makeMove(cell) {
-//   if(mode === '0') {
-//     if (win || isRequestInProgress) return;
+function makeMove(cell) {
+  // console.log(cell)
+  if(mode === '0') {
+    if (win || isRequestInProgress) return;
 
-//     if (gameData.board[cell]) {
-//       return;
-//     };
+    if (gameData.user) return;
 
-//     gameData.move = cell;
+    gameData.user = cell;
 
-//     gameData.board[cell] = currentPlayer;
-//     document.getElementById(cell).disabled = true;
-//     updateBoard(gameData.board);
+    document.getElementById('button-container').classList.add('hidden');
 
-//     sendRequest(gameData);
-//   } else {
-//     if (multiplayer === '0') {
-//       if (win) return;
+    const boardContainer = document.getElementById('board-container');
+    let userMove = document.getElementById('user-move');
+    let enemyMove = document.getElementById('enemy-move');
+    if(!userMove) {
+      userMove = document.createElement('h2');
+      userMove.id = 'user-move';
+      boardContainer.appendChild(userMove);
+    };
 
-//       if (gameData.board[cell]) {
-//         return;
-//       };
+    if(!enemyMove) {
+      enemyMove = document.createElement('h2');
+      enemyMove.id = 'enemy-move';
+      boardContainer.appendChild(enemyMove);
+    };
 
-//       const {x, o, currentPlayer} = gameData;
+    userMove.textContent = `You chose ${cell}`;
+    enemyMove.textContent = `Waiting for the enemy...`;
+    userMove.classList.remove('hidden');
+    enemyMove.classList.remove('hidden');
+    sendRequest(gameData);
+  } else {
+    if (multiplayer === '0') {
+      if (win) return;
 
-//       if((currentPlayer === 'X' && x === privateToken) || (currentPlayer === 'O' && o === privateToken)) {
-//         gameData.move = cell;
+      if (gameData.board[cell]) {
+        return;
+      };
 
-//         gameData.board[cell] = currentPlayer;
-//         document.getElementById(cell).disabled = true;
-//         updateBoard(gameData.board);
+      const {x, o, currentPlayer} = gameData;
 
-//         sendMultiplayerRequest(gameData, gameUrl);
-//       };
+      if((currentPlayer === 'X' && x === privateToken) || (currentPlayer === 'O' && o === privateToken)) {
+        gameData.move = cell;
 
-//     } else {
-//       if (win) return;
+        gameData.board[cell] = currentPlayer;
+        document.getElementById(cell).disabled = true;
+        updateBoard(gameData.board);
 
-//       if (gameData.board[cell]) {
-//         return;
-//       };
+        sendMultiplayerRequest(gameData, gameUrl);
+      };
 
-//       gameData.move = cell;
+    } else {
+      if (win) return;
 
-//       gameData.board[cell] = currentPlayer;
-//       document.getElementById(cell).disabled = true;
-//       updateBoard(gameData.board);
+      if (gameData.board[cell]) {
+        return;
+      };
 
-//       gameData.winner = checkWinner();
-//       checkGameStatus(gameData);
+      gameData.move = cell;
 
-//       currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-//     };
-//   };
-// };
+      gameData.board[cell] = currentPlayer;
+      document.getElementById(cell).disabled = true;
+      updateBoard(gameData.board);
 
-// function sendRequest(data, retryCount = 0) {
-//   isRequestInProgress = true;
-//   connectionError = false;
+      gameData.winner = checkWinner();
+      checkGameStatus(gameData);
 
-//   axios.post(`${link}/api/tictactoe`, data).then(response => {
-//     gameData = response.data;
-//     updateBoard(gameData.board);
-//     checkGameStatus(gameData);
+      currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+    };
+  };
+};
 
-//     if (!win) {
-//       currentPlayer = gameData.move === 'X' ? 'O' : 'X';
-//     };
+function sendRequest(data, retryCount = 0) {
+  isRequestInProgress = true;
+  connectionError = false;
 
-//     isRequestInProgress = false;
-//   }).catch(error => {
-//     console.error("Request error:", error);
+  axios.post(`${link}/api/rpsls`, data).then(response => {
+    gameData = response.data;
+    const enemyMove = document.getElementById('enemy-move');
+    enemyMove.textContent = `The computer chose ${gameData.enemy}`;
+    checkGameStatus(gameData);
 
-//     if (retryCount < 3) {
-//       setTimeout(() => {
-//         console.log(`Retrying request... Attempt ${retryCount + 1}`);
-//         sendRequest(data, retryCount + 1);
-//       }, 20000);
-//     } else {
-//       displayConnectionError(data);
-//     };
-//   });
-// };
+    isRequestInProgress = false;
+  }).catch(error => {
+    console.error("Request error:", error);
+
+    if (retryCount < 3) {
+      setTimeout(() => {
+        console.log(`Retrying request... Attempt ${retryCount + 1}`);
+        sendRequest(data, retryCount + 1);
+      }, 20000);
+    } else {
+      displayConnectionError(data);
+    };
+  });
+};
 
 // function displayConnectionError(data) {
 //   connectionError = true;
@@ -169,50 +182,54 @@ function checkWinner() {
 //   };
 // };
 
-// function checkGameStatus(gameData) {
-//   if (gameData.winner || Object.values(gameData.board).every(cell => cell)) {
-//     let resultMessage;
-//     if(mode === '0') {
-//       resultMessage = gameData.winner === 'X' ? "You Win!" : (gameData.winner === 'O' ? "You Lose!" : "It's a Tie!");
-//     } else {
-//       if(multiplayer === '0') {
-//         if(gameData.x === privateToken) {
-//           resultMessage = gameData.winner === 'X' ? "You Win!" : (gameData.winner === 'O' ? "You Lose!" : "It's a Tie!");
-//         } else {
-//           resultMessage = gameData.winner === 'X' ? "You Lose!" : (gameData.winner === 'O' ? "You Win!" : "It's a Tie!");
-//         };
-//       } else {
-//         resultMessage = gameData.winner === 'X' ? "X Won!" : (gameData.winner === 'O' ? "O Won!" : "It's a Tie!");
-//       };
-//     };
-//     fetchGame(false);
+function checkGameStatus(gameData) {
+  if (gameData.winner) {
+    let resultMessage;
+    if(mode === '0') {
+      resultMessage = gameData.winner === 'Win' ? `You Win!<br>${gameData.message}` : (gameData.winner === 'Lose' ? `You Lose!<br>${gameData.message}` : "It's a Tie!");
+    } else {
+      if(multiplayer === '0') {
+        if(gameData.x === privateToken) {
+          resultMessage = gameData.winner === 'Win' ? `You Win!<br>${gameData.message}` : (gameData.winner === 'Lose' ? `You Lose!<br>${gameData.message}` : "It's a Tie!");
+        } else {
+          resultMessage = gameData.winner === 'Win' ? `You Lose!<br>${gameData.message}` : (gameData.winner === 'Lose' ? `You Win!<br>${gameData.message}` : "It's a Tie!");
+        };
+      } else {
+        resultMessage = gameData.winner === 'Win' ? `First player won!<br>${gameData.message}` : (gameData.winner === 'Lose' ? `Second player won!<br>${gameData.message}` : "It's a Tie!");
+      };
+    };
+    fetchGame(false);
     
-//     document.getElementById('result-message').textContent = resultMessage;
+    document.getElementById('result-message').innerHTML = resultMessage;
 
-//     const cells = document.querySelectorAll('.cell');
-//     cells.forEach(cell => {
-//       cell.disabled = true;
-//     });
+    win = true;
 
-//     win = true;
+    const retryButton = document.getElementById('retry-button');
+    if (retryButton) retryButton.remove();
 
-//     const retryButton = document.getElementById('retry-button');
-//     if (retryButton) retryButton.remove();
-
-//     document.getElementById('end-game-container').classList.remove('hidden');
-//     document.getElementById('go-home-button').classList.remove('hidden');
-//     checkAndDrawLine();
-//   };
-// };
+    document.getElementById('end-game-container').classList.remove('hidden');
+    document.getElementById('go-home-button').classList.remove('hidden');
+  };
+};
 
 function initGame() {
   document.getElementById('difficulty-container').classList.remove('hidden');
-//   document.getElementById('board-container').classList.add('hidden');
+  document.getElementById('board-container').classList.add('hidden');
   document.getElementById('end-game-container').classList.add('hidden');
   document.getElementById('go-home-button').classList.remove('hidden');
+  document.getElementById('button-container').classList.remove('hidden');
+  const userMove = document.getElementById('user-move')
+  if(userMove) userMove.classList.add('hidden');
+  const enemyMove =document.getElementById('enemy-move')
+  if(enemyMove) enemyMove.classList.add('hidden');
+
   win = false;
   isRequestInProgress = false;
   connectionError = false;
+  gameData.user = false;
+  gameData.enemy = false;
+  gameData.winner = false;
+  gameData.message = false;
 
   const mode = document.getElementById('mode').value;
   if(mode === '0') {
@@ -220,60 +237,57 @@ function initGame() {
   } else {
     document.getElementById('multiplayer').classList.remove('hidden');
   };
+  
+  removeMediaQueryRule();
 };
 
-// function startNewGame() {
-//   document.getElementById('go-home-button').classList.add('hidden');
-//   fetchGame(false);
-//   mode = document.getElementById('mode').value;
-//   if(mode === '0') {
-//     const difficulty = document.getElementById('difficulty').value;
-//     gameData.difficulty = parseInt(difficulty);
-//     gameData.board = {
-//       c1: false, c2: false, c3: false,
-//       c4: false, c5: false, c6: false,
-//       c7: false, c8: false, c9: false
-//     };
-//     currentPlayer = 'X';
-//     updateBoard(gameData.board);
-//     document.getElementById('difficulty-container').classList.add('hidden');
-//     document.getElementById('board-container').classList.remove('hidden');
+function startNewGame() {
+  document.getElementById('go-home-button').classList.add('hidden');
+  fetchGame(false);
+  mode = document.getElementById('mode').value;
+  if(mode === '0') {
+    gameData.user = false;
+    gameData.enemy = false;
+    // updateBoard(gameData.board);
+    document.getElementById('difficulty-container').classList.add('hidden');
+    document.getElementById('board-container').classList.remove('hidden');
 
-//     const cells = document.querySelectorAll('.cell');
-//     cells.forEach(cell => {
-//       cell.disabled = false;
-//       cell.textContent = '';
-//     });
+    // const cells = document.querySelectorAll('.cell');
+    // cells.forEach(cell => {
+    //   cell.disabled = false;
+    //   cell.textContent = '';
+    // });
 
-//     win = false;
-//     isRequestInProgress = false;
-//     connectionError = false;
-//   } else {
-//     multiplayer = document.getElementById('multiplayer').value;
-//     if(multiplayer === '0') {
-//       document.getElementById('token-container').classList.remove('hidden');
-//       fetchTokens();
-//     } else {
-//       gameData.board = {
-//         c1: false, c2: false, c3: false,
-//         c4: false, c5: false, c6: false,
-//         c7: false, c8: false, c9: false
-//       };
-//       currentPlayer = 'X';
-//       updateBoard(gameData.board);
-//       document.getElementById('difficulty-container').classList.add('hidden');
-//       document.getElementById('board-container').classList.remove('hidden');
+    win = false;
+    isRequestInProgress = false;
+    connectionError = false;
+  } else {
+    multiplayer = document.getElementById('multiplayer').value;
+    if(multiplayer === '0') {
+      document.getElementById('token-container').classList.remove('hidden');
+      fetchTokens();
+    } else {
+      gameData.board = {
+        c1: false, c2: false, c3: false,
+        c4: false, c5: false, c6: false,
+        c7: false, c8: false, c9: false
+      };
+      currentPlayer = 'X';
+      updateBoard(gameData.board);
+      document.getElementById('difficulty-container').classList.add('hidden');
+      document.getElementById('board-container').classList.remove('hidden');
   
-//       const cells = document.querySelectorAll('.cell');
-//       cells.forEach(cell => {
-//         cell.disabled = false;
-//         cell.textContent = '';
-//       });
+      const cells = document.querySelectorAll('.cell');
+      cells.forEach(cell => {
+        cell.disabled = false;
+        cell.textContent = '';
+      });
   
-//       win = false;
-//     };
-//   };
-// };
+      win = false;
+    };
+  };
+  addMediaQueryRule();
+};
 
 function fetchTokens(retryCount = 0) {
   axios.post(`${link}/api/generatetoken?rpsls`).then(response => {
@@ -325,50 +339,50 @@ function fetchTokens(retryCount = 0) {
   });
 };
 
-// function fetchGame(start = true, url) {
-//   if (start) {
-//     if(!fetchInterval) {
-//       fetchInterval = setInterval(() => {
-//         if(privateToken) {
-//           if(!url) url = `${link}/api/tictactoe/multiplayer/${privateToken}`;
-//           axios.get(url).then(response => {
-//             gameData = response.data;
+function fetchGame(start = true, url) {
+  if (start) {
+    if(!fetchInterval) {
+      fetchInterval = setInterval(() => {
+        if(privateToken) {
+          if(!url) url = `${link}/api/tictactoe/multiplayer/${privateToken}`;
+          axios.get(url).then(response => {
+            gameData = response.data;
 
-//             updateBoard(gameData.board);
-//             checkGameStatus(gameData);
-//             if(first) {
-//               document.getElementById('end-game-container').classList.add('hidden');
-//               document.getElementById('go-home-button').classList.add('hidden');
+            updateBoard(gameData.board);
+            checkGameStatus(gameData);
+            if(first) {
+              document.getElementById('end-game-container').classList.add('hidden');
+              document.getElementById('go-home-button').classList.add('hidden');
 
-//               document.getElementById('difficulty-container').classList.add('hidden');
-//               document.getElementById('token-container').classList.add('hidden');
-//               document.getElementById('invitation-container').classList.add('hidden');
-//               document.getElementById('board-container').classList.remove('hidden');
+              document.getElementById('difficulty-container').classList.add('hidden');
+              document.getElementById('token-container').classList.add('hidden');
+              document.getElementById('invitation-container').classList.add('hidden');
+              document.getElementById('board-container').classList.remove('hidden');
 
-//               const cells = document.querySelectorAll('.cell');
-//               cells.forEach(cell => {
-//                 cell.disabled = false;
-//                 cell.textContent = '';
-//               });
+              const cells = document.querySelectorAll('.cell');
+              cells.forEach(cell => {
+                cell.disabled = false;
+                cell.textContent = '';
+              });
 
-//               win = false;
-//               first = false;
-//             };
-//           }).catch(error => {
-//             if (error.response?.data?.success !== false) {
-//               console.error("Error fetching the game:", error);
-//             };
-//           });
-//         };
-//       }, 5000);
-//     };
-//   } else {
-//     if(fetchInterval) {
-//       clearInterval(fetchInterval);
-//       fetchInterval = null;
-//     };
-//   };
-// };
+              win = false;
+              first = false;
+            };
+          }).catch(error => {
+            if (error.response?.data?.success !== false) {
+              console.error("Error fetching the game:", error);
+            };
+          });
+        };
+      }, 5000);
+    };
+  } else {
+    if(fetchInterval) {
+      clearInterval(fetchInterval);
+      fetchInterval = null;
+    };
+  };
+};
 
 // function sendMultiplayerRequest(data, gameUrl, retryCount = 0) {
 //   isRequestInProgress = true;
@@ -577,8 +591,9 @@ function restartGame() {
   gameUrl = false;
   first = true;
   document.getElementById('end-game-container').classList.add('hidden');
+  // document.boardContainer.classList.add('hidden');
   // document.getElementById('go-home-button').classList.add('hidden');
-  document.getElementById('line').classList.add('hidden');
+  // document.getElementById('line').classList.add('hidden');
   initGame();
 };
 
@@ -602,9 +617,9 @@ function clearToken() {
 };
 
 function initBoard() {
-  const cells = document.querySelectorAll('.cell');
-  cells.forEach(cell => {
-    cell.addEventListener('click', () => makeMove(cell.id));
+  const buttons = document.querySelectorAll('.game-button');
+  buttons.forEach(button => {
+    button.addEventListener('click', () => makeMove(button.value));
   });
   document.getElementById('start-game').addEventListener('click', startNewGame);
   document.getElementById('restart-game').addEventListener('click', restartGame);
@@ -625,6 +640,37 @@ function copyText() {
 
 document.getElementById('go-home-button').onclick = function() {
   window.location.href = '/';
+};
+
+function addMediaQueryRule() {
+  const styleSheet = document.styleSheets[1];
+  const mediaQuery = '@media (max-height: 800px) { .container { justify-content: flex-start; } }';
+  
+  if (styleSheet.insertRule) {
+    styleSheet.insertRule(mediaQuery, styleSheet.cssRules.length);
+  }
+};
+
+function removeMediaQueryRule() {
+  const styleSheet = document.styleSheets[1];
+  const rules = styleSheet.cssRules || styleSheet.rules;
+  
+  for (let i = 0; i < rules.length; i++) {
+    if (rules[i] instanceof CSSMediaRule && rules[i].conditionText === '(max-height: 800px)') {
+      const mediaRules = rules[i].cssRules;
+      for (let j = 0; j < mediaRules.length; j++) {
+        if (mediaRules[j].selectorText === '.container' && mediaRules[j].style.justifyContent === 'flex-start') {
+          rules[i].deleteRule(j);
+          break;
+        }
+      }
+
+      if (rules[i].cssRules.length === 0) {
+        styleSheet.deleteRule(i);
+      }
+      break;
+    }
+  }
 };
 
 initBoard();

@@ -6,9 +6,10 @@
   <title>Rock Paper Scissors Lizard Spock</title>
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
   <link rel="stylesheet" type="text/css" href="/style/style.css">
+  <link rel="stylesheet" type="text/css" href="/style/style-rpsls.css">
 </head>
 <body>
-  <div class="container">
+  <div id="main-container" class="container">
     <h1>Rock Paper Scissors Lizard Spock</h1>
 
     <div id="difficulty-container" class="hidden">
@@ -27,24 +28,25 @@
       <div id="invitation-container">
       </div>
     </div>
-    <!-- <div id="board-container" class="hidden">
-      <div class="board" id="board">
-        <div class="gridline horizontal" id="line1"></div>
-        <div class="gridline horizontal" id="line2"></div>
-        <div class="gridline vertical" id="line3"></div>
-        <div class="gridline vertical" id="line4"></div>
-        <div class="cell tl" id="c1"></div>
-        <div class="cell" id="c2"></div>
-        <div class="cell tr" id="c3"></div>
-        <div class="cell" id="c4"></div>
-        <div class="cell" id="c5"></div>
-        <div class="cell" id="c6"></div>
-        <div class="cell bl" id="c7"></div>
-        <div class="cell" id="c8"></div>
-        <div class="cell br" id="c9"></div>
-        <div id="line" class="hidden"></div>
-      </div>
-    </div> -->
+    <div id="board-container" class="hidden">
+      <!-- <div class="board" id="board"> -->
+        <h2>Please select one of the buttons to choose your move in Rock Paper Scissors Lizard Spock</h2>
+        <h3 id="game-info" class="tooltip">How to Play
+          <span class="tooltiptext">
+            Scissors cuts Paper, Paper covers Rock, Rock crushes Lizard, Lizard poisons Spock, Spock smashes Scissors, Scissors decapitates Lizard, Lizard eats Paper, Paper disproves Spock, Spock vaporizes Rock, Rock crushes Scissors.
+            <br><br>
+            For more information, visit <a href="http://www.samkass.com/theories/RPSSL.html" target="_blank">Sam Kass' website</a>. This game is based on his idea, but it is not endorsed by him.
+          </span>
+        </h3>
+        <div id="button-container" class="button-container">
+          <button class="game-button" value="rock">Rock</button>
+          <button class="game-button" value="paper">Paper</button>
+          <button class="game-button" value="scissors">Scissors</button>
+          <button class="game-button" value="lizard">Lizard</button>
+          <button class="game-button" value="spock">Spock</button>
+        </div>
+      <!-- </div> -->
+    </div>
 
     <div id="end-game-container" class="hidden">
       <p id="result-message"></p>

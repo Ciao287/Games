@@ -568,40 +568,50 @@ app.get('/api/tictactoe/multiplayer/:param', async (req, res) => {
 
 app.post('/api/rpsls', async (req, res) => {
     const { user, computer, winner } = req.body;
-    const choice = user.toLowerCase();
-    const computerChoice = computer.toLowerCase();
+    // console.log(req.body);
+    // const choice = user.toLowerCase();
+    // const computerChoice = computer.toLowerCase();
     const validChoices = ['rock', 'paper', 'scissors', 'lizard', 'spock'];
 
     if (winner) {
         return res.status(200).json(req.body);
     };
 
-    if (!validChoices.includes(choice)) {
+    if (!user) {
         return res.status(400).json({
             success: false,
-            error: 'The choice must be a string and must be one of the following: rock, paper, scissors, lizard, spock.'
+            error: 'The user must be a string and must be one of the following: rock, paper, scissors, lizard, spock.'
         });
     };
 
-    if (validChoices.includes(computerChoice)) {
-        const { winner, message } = checkWinnerRPSLS(choice, computerChoice);
-
-        res.status(200).json({
-            success: true,
-            user: choice,
-            computer: computerChoice,
-            winner: winner,
-            message: message
+    if (!validChoices.includes(user.toLowerCase())) {
+        return res.status(400).json({
+            success: false,
+            error: 'The user must be a string and must be one of the following: rock, paper, scissors, lizard, spock.'
         });
+    }
+
+    if(computer) {
+        if (validChoices.includes(computer.toLowerCase())) {
+            const { winner, message } = checkWinnerRPSLS(user.toLowerCase(), computer.toLowerCase());
+
+            return res.status(200).json({
+                success: true,
+                user: user.toLowerCase(),
+                enemy: computer.toLowerCase(),
+                winner: winner,
+                message: message
+            });
+        };
     };
 
     const randomChoice = validChoices[Math.floor(Math.random() * validChoices.length)];
-    const { newWinner, message } = checkWinnerRPSLS(choice, randomChoice);
+    const { winner: newWinner, message } = checkWinnerRPSLS(user.toLowerCase(), randomChoice);
 
     res.status(200).json({
         success: true,
-        user: choice,
-        computer: randomChoice,
+        user: user.toLowerCase(),
+        enemy: randomChoice,
         winner: newWinner,
         message: message
     });
