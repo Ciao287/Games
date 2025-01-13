@@ -21,7 +21,7 @@ function checkWinner() {
 
     if (user === enemy) return {
         winner: "Tie",
-        message: "It's a tie!"
+        message: "It's a t2ie!"
     };
 
     const winMap = {
@@ -47,6 +47,8 @@ function checkWinner() {
 
 function makeMove(cell) {
   // console.log(cell)
+  if(cell.endsWith('2') && mode === '0') return;
+  if(cell.endsWith('2') && mode === '1' && multiplayer === '0') return;
   if(mode === '0') {
     if (win || isRequestInProgress) return;
 
@@ -99,20 +101,63 @@ function makeMove(cell) {
     } else {
       if (win) return;
 
-      if (gameData.board[cell]) {
-        return;
+      if(gameData.user && gameData.enemy) return;
+
+      // if (gameData.board[cell]) {
+      //   return;
+      // };
+
+      if(cell.endsWith('2')) {
+        gameData.enemy = cell.slice(0, -1);
+      } else {
+        if(!gameData.user) gameData.user = cell;
       };
 
-      gameData.move = cell;
+      const buttonContainer = document.getElementById('button-container');
+      const buttonContainer2 = document.getElementById('button-container2');
+      buttonContainer.classList.add('hidden');
 
-      gameData.board[cell] = currentPlayer;
-      document.getElementById(cell).disabled = true;
-      updateBoard(gameData.board);
+      const boardContainer = document.getElementById('board-container');
+      let userMove = document.getElementById('user-move');
+      let enemyMove = document.getElementById('enemy-move');
+      if(!userMove) {
+        userMove = document.createElement('h2');
+        userMove.id = 'user-move';
+        userMove.classList.add('hidden');
+        boardContainer.insertBefore(userMove, buttonContainer);
+      };
 
-      gameData.winner = checkWinner();
-      checkGameStatus(gameData);
+      if(!enemyMove) {
+        enemyMove = document.createElement('h2');
+        enemyMove.id = 'enemy-move';
+        enemyMove.classList.add('hidden');
+        boardContainer.insertBefore(enemyMove, buttonContainer);
+      };
 
-      currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+      buttonContainer2.classList.remove('hidden');
+      userMove.textContent = `Ther first player chose`;
+      enemyMove.textContent = `Waiting for the second player...`;
+
+      if(cell.endsWith('2')) {
+        buttonContainer2.classList.add('hidden');
+        userMove.textContent = `The first player chose ${gameData.user}`;
+        enemyMove.textContent = `The second player chose ${gameData.enemy}`;
+      };
+
+      userMove.classList.remove('hidden');
+      enemyMove.classList.remove('hidden');
+
+      // gameData.board[cell] = currentPlayer;
+      // document.getElementById(cell).disabled = true;
+      // updateBoard(gameData.board);
+      if(cell.endsWith('2')) {
+        const { winner, message } = checkWinner();
+        gameData.winner = winner;
+        gameData.message = message;
+        checkGameStatus(gameData);
+      };
+
+      // currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
     };
   };
 };
@@ -267,22 +312,66 @@ function startNewGame() {
       document.getElementById('token-container').classList.remove('hidden');
       fetchTokens();
     } else {
-      gameData.board = {
-        c1: false, c2: false, c3: false,
-        c4: false, c5: false, c6: false,
-        c7: false, c8: false, c9: false
-      };
-      currentPlayer = 'X';
-      updateBoard(gameData.board);
+      gameData.user = false;
+      gameData.enemy = false;
+      // updateBoard(gameData.board);
+      // gameData.board = {
+      //   c1: false, c2: false, c3: false,
+      //   c4: false, c5: false, c6: false,
+      //   c7: false, c8: false, c9: false
+      // };
+      // currentPlayer = 'X';
+      // updateBoard(gameData.board);
       document.getElementById('difficulty-container').classList.add('hidden');
       document.getElementById('board-container').classList.remove('hidden');
-  
-      const cells = document.querySelectorAll('.cell');
-      cells.forEach(cell => {
-        cell.disabled = false;
-        cell.textContent = '';
-      });
-  
+
+      const buttonContainer2 = document.getElementById('button-container2');
+
+      if(!buttonContainer2) {
+        const buttonContainer2 = document.createElement('div');
+        buttonContainer2.id = 'button-container2';
+        buttonContainer2.classList.add('button-container');
+        buttonContainer2.classList.add('hidden');
+        document.getElementById('board-container').appendChild(buttonContainer2);
+        const button = document.createElement('button');
+        button.textContent = 'Rock';
+        button.value = 'rock2';
+        button.classList.add('game-button');
+        const button2 = document.createElement('button');
+        button2.textContent = 'Paper';
+        button2.value = 'paper2';
+        button2.classList.add('game-button');
+        const button3 = document.createElement('button');
+        button3.textContent = 'Scissors';
+        button3.value = 'scissors2';
+        button3.classList.add('game-button');
+        const button4 = document.createElement('button');
+        button4.textContent = 'Lizard';
+        button4.value = 'lizard2';
+        button4.classList.add('game-button');
+        const button5 = document.createElement('button');
+        button5.textContent = 'Spock';
+        button5.value = 'spock2';
+        button5.classList.add('game-button');
+        
+        buttonContainer2.appendChild(button);
+        buttonContainer2.appendChild(button2);
+        buttonContainer2.appendChild(button3);
+        buttonContainer2.appendChild(button4);
+        buttonContainer2.appendChild(button5);
+
+        button.addEventListener('click', () => makeMove(button.value));
+        button2.addEventListener('click', () => makeMove(button2.value));
+        button3.addEventListener('click', () => makeMove(button3.value));
+        button4.addEventListener('click', () => makeMove(button4.value));
+        button5.addEventListener('click', () => makeMove(button5.value));
+      };
+      // const cells = document.querySelectorAll('.cell');
+      // cells.forEach(cell => {
+      //   cell.disabled = false;
+      //   cell.textContent = '';
+      // });
+
       win = false;
     };
   };
