@@ -21,7 +21,7 @@ function checkWinner() {
 
     if (user === enemy) return {
         winner: "Tie",
-        message: "It's a t2ie!"
+        message: "It's a Tie!"
     };
 
     const winMap = {
@@ -35,7 +35,7 @@ function checkWinner() {
     if (winMap[user] && winMap[user][enemy]) {
         return {
             winner: "Win",
-            message: winMap[user][enemy]
+            message: winMap[user][enemy] +"a"
         };
     } else {
         return {
@@ -46,7 +46,6 @@ function checkWinner() {
 };
 
 function makeMove(cell) {
-  // console.log(cell)
   if(cell.endsWith('2') && mode === '0') return;
   if(cell.endsWith('2') && mode === '1' && multiplayer === '0') return;
   if(mode === '0') {
@@ -59,18 +58,19 @@ function makeMove(cell) {
     document.getElementById('button-container').classList.add('hidden');
 
     const boardContainer = document.getElementById('board-container');
+    const buttonContainer = document.getElementById('button-container');
     let userMove = document.getElementById('user-move');
     let enemyMove = document.getElementById('enemy-move');
     if(!userMove) {
       userMove = document.createElement('h2');
       userMove.id = 'user-move';
-      boardContainer.appendChild(userMove);
+      boardContainer.insertBefore(userMove, buttonContainer);
     };
 
     if(!enemyMove) {
       enemyMove = document.createElement('h2');
       enemyMove.id = 'enemy-move';
-      boardContainer.appendChild(enemyMove);
+      boardContainer.insertBefore(enemyMove, buttonContainer);
     };
 
     userMove.textContent = `You chose ${cell}`;
@@ -82,30 +82,41 @@ function makeMove(cell) {
     if (multiplayer === '0') {
       if (win) return;
 
-      if (gameData.board[cell]) {
-        return;
+      const boardContainer = document.getElementById('board-container');
+      const buttonContainer = document.getElementById('button-container');
+      let userMove = document.getElementById('user-move');
+      let enemyMove = document.getElementById('enemy-move');
+      if(!userMove) {
+        userMove = document.createElement('h2');
+        userMove.id = 'user-move';
+        userMove.classList.add('hidden');
+        boardContainer.insertBefore(userMove, buttonContainer);
       };
 
-      const {x, o, currentPlayer} = gameData;
-
-      if((currentPlayer === 'X' && x === privateToken) || (currentPlayer === 'O' && o === privateToken)) {
-        gameData.move = cell;
-
-        gameData.board[cell] = currentPlayer;
-        document.getElementById(cell).disabled = true;
-        updateBoard(gameData.board);
-
-        sendMultiplayerRequest(gameData, gameUrl);
+      if(!enemyMove) {
+        enemyMove = document.createElement('h2');
+        enemyMove.id = 'enemy-move';
+        enemyMove.classList.add('hidden');
+        boardContainer.insertBefore(enemyMove, buttonContainer);
       };
 
+      if(privateToken === gameData.u) {
+        if (!gameData.user) gameData.user = cell;
+        userMove.textContent = `You chose ${gameData.user}`;
+      } else if(privateToken === gameData.e) {
+        if (!gameData.enemy) gameData.enemy = cell;
+        enemyMove.textContent = `You chose ${gameData.enemy}`;
+      } else return;
+
+      userMove.classList.remove('hidden');
+      enemyMove.classList.remove('hidden');
+      buttonContainer.classList.add('hidden');
+
+      sendMultiplayerRequest(gameData, gameUrl);
     } else {
       if (win) return;
 
       if(gameData.user && gameData.enemy) return;
-
-      // if (gameData.board[cell]) {
-      //   return;
-      // };
 
       if(cell.endsWith('2')) {
         gameData.enemy = cell.slice(0, -1);
@@ -147,17 +158,12 @@ function makeMove(cell) {
       userMove.classList.remove('hidden');
       enemyMove.classList.remove('hidden');
 
-      // gameData.board[cell] = currentPlayer;
-      // document.getElementById(cell).disabled = true;
-      // updateBoard(gameData.board);
       if(cell.endsWith('2')) {
         const { winner, message } = checkWinner();
         gameData.winner = winner;
         gameData.message = message;
         checkGameStatus(gameData);
       };
-
-      // currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
     };
   };
 };
@@ -187,60 +193,45 @@ function sendRequest(data, retryCount = 0) {
   });
 };
 
-// function displayConnectionError(data) {
-//   connectionError = true;
-//   isRequestInProgress = true;
+function displayConnectionError(data) {
+  connectionError = true;
+  isRequestInProgress = true;
 
-//   const resultMessage = document.getElementById('result-message');
-//   resultMessage.textContent = "No connection. Please check your internet and press the button below to retry.";
-//   resultMessage.style.display = 'block';
+  const resultMessage = document.getElementById('result-message');
+  resultMessage.textContent = "No connection. Please check your internet and press the button below to retry.";
+  resultMessage.style.display = 'block';
 
-//   const retryButton = document.createElement('button');
-//   retryButton.textContent = "Retry";
-//   retryButton.id = "retry-button";
-//   const endGameContainer = document.getElementById('end-game-container');
-//   const gotoHomeButton = document.getElementById('go-home-button');
-//   retryButton.onclick = () => {
-//     retryButton.remove();
-//     endGameContainer.classList.add('hidden');
-//     gotoHomeButton.classList.add('hidden');
-//     sendRequest(data);
-//   };
+  const retryButton = document.createElement('button');
+  retryButton.textContent = "Retry";
+  retryButton.id = "retry-button";
+  const endGameContainer = document.getElementById('end-game-container');
+  const gotoHomeButton = document.getElementById('go-home-button');
+  retryButton.onclick = () => {
+    retryButton.remove();
+    endGameContainer.classList.add('hidden');
+    gotoHomeButton.classList.add('hidden');
+    sendRequest(data);
+  };
 
-//   endGameContainer.appendChild(retryButton);
-//   endGameContainer.classList.remove('hidden');
-//   gotoHomeButton.classList.remove('hidden');
-// };
-
-// function updateBoard(board) {
-//   for (let cell in board) {
-//     const cellElement = document.getElementById(cell);
-//     if (cellElement) {
-//       if (board[cell] === 'X') {
-//         cellElement.classList.add('x');
-//       } else if (board[cell] === 'O') {
-//         cellElement.classList.add('o');
-//       } else {
-//         cellElement.classList.remove('x', 'o');
-//       };
-//     };
-//   };
-// };
+  endGameContainer.appendChild(retryButton);
+  endGameContainer.classList.remove('hidden');
+  gotoHomeButton.classList.remove('hidden');
+};
 
 function checkGameStatus(gameData) {
   if (gameData.winner) {
     let resultMessage;
     if(mode === '0') {
-      resultMessage = gameData.winner === 'Win' ? `You Win!<br>${gameData.message}` : (gameData.winner === 'Lose' ? `You Lose!<br>${gameData.message}` : "It's a Tie!");
+      resultMessage = gameData.winner === 'Win' ? `You Win!<br>${gameData.message}` : (gameData.winner === 'Lose' ? `You Lose!<br>${gameData.message}` : gameData.message);
     } else {
       if(multiplayer === '0') {
-        if(gameData.x === privateToken) {
-          resultMessage = gameData.winner === 'Win' ? `You Win!<br>${gameData.message}` : (gameData.winner === 'Lose' ? `You Lose!<br>${gameData.message}` : "It's a Tie!");
+        if(gameData.u === privateToken) {
+          resultMessage = gameData.winner === 'Win' ? `You Win!<br>${gameData.message}` : (gameData.winner === 'Lose' ? `You Lose!<br>${gameData.message}` : gameData.message);
         } else {
-          resultMessage = gameData.winner === 'Win' ? `You Lose!<br>${gameData.message}` : (gameData.winner === 'Lose' ? `You Win!<br>${gameData.message}` : "It's a Tie!");
+          resultMessage = gameData.winner === 'Win' ? `You Lose!<br>${gameData.message}` : (gameData.winner === 'Lose' ? `You Win!<br>${gameData.message}` : gameData.message);
         };
       } else {
-        resultMessage = gameData.winner === 'Win' ? `First player won!<br>${gameData.message}` : (gameData.winner === 'Lose' ? `Second player won!<br>${gameData.message}` : "It's a Tie!");
+        resultMessage = gameData.winner === 'Win' ? `First player won!<br>${gameData.message}` : (gameData.winner === 'Lose' ? `Second player won!<br>${gameData.message}` : gameData.message);
       };
     };
     fetchGame(false);
@@ -293,15 +284,9 @@ function startNewGame() {
   if(mode === '0') {
     gameData.user = false;
     gameData.enemy = false;
-    // updateBoard(gameData.board);
+
     document.getElementById('difficulty-container').classList.add('hidden');
     document.getElementById('board-container').classList.remove('hidden');
-
-    // const cells = document.querySelectorAll('.cell');
-    // cells.forEach(cell => {
-    //   cell.disabled = false;
-    //   cell.textContent = '';
-    // });
 
     win = false;
     isRequestInProgress = false;
@@ -314,14 +299,7 @@ function startNewGame() {
     } else {
       gameData.user = false;
       gameData.enemy = false;
-      // updateBoard(gameData.board);
-      // gameData.board = {
-      //   c1: false, c2: false, c3: false,
-      //   c4: false, c5: false, c6: false,
-      //   c7: false, c8: false, c9: false
-      // };
-      // currentPlayer = 'X';
-      // updateBoard(gameData.board);
+
       document.getElementById('difficulty-container').classList.add('hidden');
       document.getElementById('board-container').classList.remove('hidden');
 
@@ -366,11 +344,6 @@ function startNewGame() {
         button4.addEventListener('click', () => makeMove(button4.value));
         button5.addEventListener('click', () => makeMove(button5.value));
       };
-      // const cells = document.querySelectorAll('.cell');
-      // cells.forEach(cell => {
-      //   cell.disabled = false;
-      //   cell.textContent = '';
-      // });
 
       win = false;
     };
@@ -433,11 +406,50 @@ function fetchGame(start = true, url) {
     if(!fetchInterval) {
       fetchInterval = setInterval(() => {
         if(privateToken) {
-          if(!url) url = `${link}/api/tictactoe/multiplayer/${privateToken}`;
+          if(!url) url = `${link}/api/rpsls/multiplayer/${privateToken}`;
           axios.get(url).then(response => {
             gameData = response.data;
+            let isUser;
+            if(privateToken === gameData.u) {
+              isUser = true;
+            } else if(privateToken === gameData.e) {
+              isUser = false;
+            } else return;
 
-            updateBoard(gameData.board);
+            const boardContainer = document.getElementById('board-container');
+            const buttonContainer = document.getElementById('button-container');
+            let userMove = document.getElementById('user-move');
+            let enemyMove = document.getElementById('enemy-move');
+            if(!userMove) {
+              userMove = document.createElement('h2');
+              userMove.id = 'user-move';
+              boardContainer.insertBefore(userMove, buttonContainer);
+            };
+
+            if(!enemyMove) {
+              enemyMove = document.createElement('h2');
+              enemyMove.id = 'enemy-move';
+              boardContainer.insertBefore(enemyMove, buttonContainer);
+            };
+
+            userMove.textContent = isUser ? `Waiting for you...`: `Waiting for the enemy...`;
+            enemyMove.textContent = isUser ? `Waiting for the enemy...`: `Waiting for you...`;
+
+            if(gameData.user) {
+              userMove.textContent = isUser ? `You chose ${gameData.user}` : `The enemy chose`;
+            };
+            if(gameData.enemy) {
+              enemyMove.textContent = isUser ? `The enemy chose` : `You chose ${gameData.enemy}`;
+            };
+
+            if(gameData.winner) {
+              userMove.textContent = isUser ? `You chose ${gameData.user}` : `The enemy chose ${gameData.user}`;
+              enemyMove.textContent = isUser ? `The enemy chose ${gameData.enemy}` : `You chose ${gameData.enemy}`;
+            };
+
+            userMove.classList.remove('hidden');
+            enemyMove.classList.remove('hidden');
+
             checkGameStatus(gameData);
             if(first) {
               document.getElementById('end-game-container').classList.add('hidden');
@@ -447,12 +459,6 @@ function fetchGame(start = true, url) {
               document.getElementById('token-container').classList.add('hidden');
               document.getElementById('invitation-container').classList.add('hidden');
               document.getElementById('board-container').classList.remove('hidden');
-
-              const cells = document.querySelectorAll('.cell');
-              cells.forEach(cell => {
-                cell.disabled = false;
-                cell.textContent = '';
-              });
 
               win = false;
               first = false;
@@ -473,59 +479,95 @@ function fetchGame(start = true, url) {
   };
 };
 
-// function sendMultiplayerRequest(data, gameUrl, retryCount = 0) {
-//   isRequestInProgress = true;
-//   connectionError = false;
+function sendMultiplayerRequest(data, gameUrl, retryCount = 0) {
+  isRequestInProgress = true;
+  connectionError = false;
 
-//   url = gameUrl ? gameUrl : `${link}/api/tictactoe/multiplayer/${privateToken}`;
-//   axios.post(url, data).then(response => {
-//     gameData = response.data;
-//     updateBoard(gameData.board);
-//     checkGameStatus(gameData);
+  url = gameUrl ? gameUrl : `${link}/api/rpsls/multiplayer/${privateToken}`;
+  axios.post(url, data).then(response => {
+    gameData = response.data;
 
-//     if (!win) {
-//       currentPlayer = gameData.move === 'X' ? 'O' : 'X';
-//     };
+    let isUser;
+    if(privateToken === gameData.u) {
+      isUser = true;
+    } else if(privateToken === gameData.e) {
+      isUser = false;
+    } else return;
+    
+    const boardContainer = document.getElementById('board-container');
+    const buttonContainer = document.getElementById('button-container');
+    let userMove = document.getElementById('user-move');
+    let enemyMove = document.getElementById('enemy-move');
+    if(!userMove) {
+      userMove = document.createElement('h2');
+      userMove.id = 'user-move';
+      boardContainer.insertBefore(userMove, buttonContainer);
+    };
 
-//     isRequestInProgress = false;
-//   }).catch(error => {
-//     console.error("Request error:", error);
+    if(!enemyMove) {
+      enemyMove = document.createElement('h2');
+      enemyMove.id = 'enemy-move';
+      boardContainer.insertBefore(enemyMove, buttonContainer);
+    };
 
-//     if (retryCount < 3) {
-//       setTimeout(() => {
-//         console.log(`Retrying request... Attempt ${retryCount + 1}`);
-//         sendMultiplayerRequest(data, gameUrl, retryCount + 1);
-//       }, 20000);
-//     } else {
-//       displayMultiplayerConnectionError(data, gameUrl);
-//     };
-//   });
-// };
+    userMove.textContent = isUser ? `Waiting for you...` : `Waiting for the enemy...`;
+    enemyMove.textContent = isUser ? `Waiting for the enemy...` : `Waiting for you...`;
 
-// function displayMultiplayerConnectionError(data, gameUrl) {
-//   connectionError = true;
-//   isRequestInProgress = true;
+    if(gameData.user) {
+      userMove.textContent = isUser ? `You chose ${gameData.user}` : `The enemy chose`;
+    };
+    if(gameData.enemy) {
+      enemyMove.textContent = isUser ? `The enemy chose` : `You chose ${gameData.enemy}`;
+    };
 
-//   const resultMessage = document.getElementById('result-message');
-//   resultMessage.textContent = "No connection. Please check your internet and press the button below to retry.";
-//   resultMessage.style.display = 'block';
+    if(gameData.winner) {
+      userMove.textContent = isUser ? `You chose ${gameData.user}` : `The enemy chose ${gameData.user}`;
+      enemyMove.textContent = isUser ? `The enemy chose ${gameData.enemy}` : `You chose ${gameData.enemy}`;
+    };
 
-//   const retryButton = document.createElement('button');
-//   retryButton.textContent = "Retry";
-//   retryButton.id = "retry-button";
-//   const endGameContainer = document.getElementById('end-game-container');
-//   const gotoHomeButton = document.getElementById('go-home-button');
-//   retryButton.onclick = () => {
-//     retryButton.remove();
-//     endGameContainer.classList.add('hidden');
-//     gotoHomeButton.classList.add('hidden');
-//     sendMultiplayerRequest(data, gameUrl);
-//   };
+    userMove.classList.remove('hidden');
+    enemyMove.classList.remove('hidden');
+    checkGameStatus(gameData);
 
-//   endGameContainer.appendChild(retryButton);
-//   endGameContainer.classList.remove('hidden');
-//   gotoHomeButton.classList.remove('hidden');
-// };
+    isRequestInProgress = false;
+  }).catch(error => {
+    console.error("Request error:", error);
+
+    if (retryCount < 3) {
+      setTimeout(() => {
+        console.log(`Retrying request... Attempt ${retryCount + 1}`);
+        sendMultiplayerRequest(data, gameUrl, retryCount + 1);
+      }, 20000);
+    } else {
+      displayMultiplayerConnectionError(data, gameUrl);
+    };
+  });
+};
+
+function displayMultiplayerConnectionError(data, gameUrl) {
+  connectionError = true;
+  isRequestInProgress = true;
+
+  const resultMessage = document.getElementById('result-message');
+  resultMessage.textContent = "No connection. Please check your internet and press the button below to retry.";
+  resultMessage.style.display = 'block';
+
+  const retryButton = document.createElement('button');
+  retryButton.textContent = "Retry";
+  retryButton.id = "retry-button";
+  const endGameContainer = document.getElementById('end-game-container');
+  const gotoHomeButton = document.getElementById('go-home-button');
+  retryButton.onclick = () => {
+    retryButton.remove();
+    endGameContainer.classList.add('hidden');
+    gotoHomeButton.classList.add('hidden');
+    sendMultiplayerRequest(data, gameUrl);
+  };
+
+  endGameContainer.appendChild(retryButton);
+  endGameContainer.classList.remove('hidden');
+  gotoHomeButton.classList.remove('hidden');
+};
 
 function verifyCode() {
   const inputField = document.getElementById('invite-code');
@@ -633,27 +675,40 @@ function verifyToken(data, retryCount = 0) {
   });
 };
 
-// function startMultiplayerGame(data) {
-//   data.board = {
-//     c1: false, c2: false, c3: false,
-//     c4: false, c5: false, c6: false,
-//     c7: false, c8: false, c9: false
-//   };
-//   currentPlayer = 'X';
-//   updateBoard(data.board);
-//   document.getElementById('difficulty-container').classList.add('hidden');
-//   document.getElementById('token-container').classList.add('hidden');
-//   document.getElementById('invitation-container').classList.add('hidden');
-//   document.getElementById('board-container').classList.remove('hidden');
+function startMultiplayerGame() {
+  document.getElementById('difficulty-container').classList.add('hidden');
+  document.getElementById('token-container').classList.add('hidden');
+  document.getElementById('invitation-container').classList.add('hidden');
+  document.getElementById('board-container').classList.remove('hidden');
+  document.getElementById('button-container').classList.remove('hidden');
+  document.getElementById('go-home-button').classList.add('hidden');
 
-//   const cells = document.querySelectorAll('.cell');
-//   cells.forEach(cell => {
-//     cell.disabled = false;
-//     cell.textContent = '';
-//   });
+  const boardContainer = document.getElementById('board-container');
+  const buttonContainer = document.getElementById('button-container');
+  let userMove = document.getElementById('user-move');
+  let enemyMove = document.getElementById('enemy-move');
+  if(!userMove) {
+    userMove = document.createElement('h2');
+    userMove.id = 'user-move';
+    userMove.classList.add('hidden');
+    boardContainer.insertBefore(userMove, buttonContainer);
+  };
 
-//   win = false;
-// };
+  if(!enemyMove) {
+    enemyMove = document.createElement('h2');
+    enemyMove.id = 'enemy-move';
+    enemyMove.classList.add('hidden');
+    boardContainer.insertBefore(enemyMove, buttonContainer);
+  };
+
+  userMove.textContent = privateToken === gameData.u ? `Waiting for you...`: `Waiting for the enemy...`;
+  enemyMove.textContent = privateToken === gameData.e ? `Waiting for the enemy...`: `Waiting for you...`;
+
+  userMove.classList.remove('hidden');
+  enemyMove.classList.remove('hidden');
+
+  win = false;
+};
 
 function displayRetryButton() {
   const endGameContainer = document.getElementById('end-game-container');
@@ -680,9 +735,7 @@ function restartGame() {
   gameUrl = false;
   first = true;
   document.getElementById('end-game-container').classList.add('hidden');
-  // document.boardContainer.classList.add('hidden');
-  // document.getElementById('go-home-button').classList.add('hidden');
-  // document.getElementById('line').classList.add('hidden');
+
   initGame();
 };
 
@@ -692,10 +745,8 @@ function handleModeChange() {
   document.getElementById('token-container').classList.add('hidden');
 
   if (mode === "0") {
-    // document.getElementById('difficulty').classList.remove('hidden');
     document.getElementById('multiplayer').classList.add('hidden');
   } else {
-    // document.getElementById('difficulty').classList.add('hidden');
     document.getElementById('multiplayer').classList.remove('hidden');
   };
 };
@@ -713,7 +764,6 @@ function initBoard() {
   document.getElementById('start-game').addEventListener('click', startNewGame);
   document.getElementById('restart-game').addEventListener('click', restartGame);
   document.getElementById('mode').addEventListener('change', handleModeChange);
-//   document.getElementById('difficulty').addEventListener('change', clearToken);
   document.getElementById('multiplayer').addEventListener('change', clearToken);
 };
 

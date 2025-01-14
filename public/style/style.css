@@ -9,20 +9,6 @@ body {
   overflow: hidden;
 }
 
-body::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url('/background.png');
-  background-repeat: repeat;
-  background-position: top left;
-  filter: blur(8px);
-  z-index: -1;
-}
-
 .container {
   text-align: center;
   display: flex;
@@ -33,100 +19,6 @@ body::before {
   padding: 20px;
   box-shadow: 0 0 60px 100px rgba(255, 255, 255, 0.4);
   border-radius: 8px;
-}
-
-.board {
-  position: relative;
-  display: grid;
-  grid-template-columns: repeat(3, 100px);
-  grid-template-rows: repeat(3, 100px);
-  gap: 5px;
-  margin-top: 20px;
-  justify-content: center;
-  align-items: center;
-  background-color: white;
-  border-radius: 10px;
-}
-
-.cell {
-  width: 100px;
-  height: 100px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: lightgray;
-  font-size: 2em;
-  cursor: pointer;
-  font-weight: bold;
-  position: relative;
-  transition: background-color 0.5s ease;
-  border-collapse: collapse;
-}
-
-.cell.tl {
-  border-top-left-radius: 10px;
-}
-
-.cell.tr {
-  border-top-right-radius: 10px;
-}
-
-.cell.bl {
-  border-bottom-left-radius: 10px;
-}
-
-.cell.br {
-  border-bottom-right-radius: 10px;
-}
-
-.cell.x {
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3e%3cline x1='10' y1='10' x2='90' y2='90' stroke='%23000' stroke-width='10' stroke-linecap='round'/%3e%3cline x1='10' y1='90' x2='90' y2='10' stroke='%23000' stroke-width='10' stroke-linecap='round'/%3e%3c/svg%3e");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 60%;
-  background-color: rgb(255, 0, 0, 0.5);
-  transition: background-color 0.5s ease;
-}
-
-.cell.o {
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3e%3ccircle cx='50' cy='50' r='40' fill='none' stroke='%23000' stroke-width='10'/%3e%3c/svg%3e");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 60%;
-  background-color: rgb(0, 0, 255, 0.5);
-  transition: background-color 0.5s ease;
-}
-
-.gridline {
-  position: absolute;
-  background-color: black;
-  z-index: 1;
-}
-
-.gridline.horizontal {
-  width: 100%;
-  height: 5px;
-}
-
-.gridline.vertical {
-  height: 100%;
-  width: 5px;
-}
-
-.gridline.horizontal#line1 {
-  top: 32.25%;
-}
-
-.gridline.horizontal#line2 {
-  top: 66.15%;
-}
-
-.gridline.vertical#line3 {
-  left: 32.25%;
-}
-
-.gridline.vertical#line4 {
-  left: 66.15%;
 }
 
 .hidden {
@@ -166,17 +58,6 @@ body::before {
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-#line {
-  position: absolute;
-  height: 4px;
-  background-color: lightgray;
-  transform-origin: left;
-  transform: scaleX(0);
-  transition: transform 0.5s ease-in-out;
-  border-radius: 2px;
-  z-index: 2;
 }
 
 select {

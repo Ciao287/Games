@@ -2,9 +2,15 @@ const express = require('express');
 const app = express();
 const path = require("path");
 const { link, port } = require('./config.json');
+const { time } = require('console');
+const e = require('express');
+const { url } = require('inspector');
 
 let tokens = [];
-let multiplayer = [];
+let multiplayer = {
+    tictcatoe: [],
+    rpsls: []
+};
 
 setInterval(cleanOldTokens, 20 * 60 * 1000);
 
@@ -34,7 +40,8 @@ function cleanOldGames() {
     const currentTime = Date.now();
     const oneDayAgo = currentTime - (24 * 60 * 60 * 1000);
 
-    multiplayer = multiplayer.filter(game => game.time > oneDayAgo);
+    multiplayer.tictcatoe = multiplayer.tictcatoe.filter(game => game.time > oneDayAgo);
+    multiplayer.rpsls = multiplayer.rpsls.filter(game => game.time > oneDayAgo);
 };
 
 function getRandomBase64Character() {
@@ -453,8 +460,8 @@ app.post('/api/verifycode', async (req, res) => {
     }
 
     if (user && enemy) {
-        const isUserInGame = multiplayer.find(obj => obj.x === user.privateToken || obj.o === user.privateToken);
-        const isEnemyInGame = multiplayer.find(obj => obj.x === enemy.privateToken || obj.o === enemy.privateToken);
+        const isUserInGame = multiplayer.tictcatoe.find(obj => obj.x === user.privateToken || obj.o === user.privateToken);
+        const isEnemyInGame = multiplayer.tictcatoe.find(obj => obj.x === enemy.privateToken || obj.o === enemy.privateToken);
         
         if(isUserInGame) {
             return res.status(400).json({
@@ -473,24 +480,41 @@ app.post('/api/verifycode', async (req, res) => {
         };
 
         if(user !== enemy) {
-            multiplayer.push({
-                time: Date.now(),
-                x: user.privateToken,
-                o: enemy.privateToken,
-                board: {
-                    c1: false, c2: false, c3: false,
-                    c4: false, c5: false, c6: false,
-                    c7: false, c8: false, c9: false
-                },
-                move: false,
-                currentPlayer: 'X',
-                winner: false
-            });
+            if(user.type === 'tictactoe') {
+                multiplayer.tictcatoe.push({
+                    time: Date.now(),
+                    x: user.privateToken,
+                    o: enemy.privateToken,
+                    board: {
+                        c1: false, c2: false, c3: false,
+                        c4: false, c5: false, c6: false,
+                        c7: false, c8: false, c9: false
+                    },
+                    move: false,
+                    currentPlayer: 'X',
+                    winner: false
+                });
 
-            res.status(200).json({
-                success: true,
-                url: `${link}/api/tictactoe/multiplayer/${user.privateToken}`
-            });
+                res.status(200).json({
+                    success: true,
+                    url: `${link}/api/tictactoe/multiplayer/${user.privateToken}`
+                });
+            } else {
+                multiplayer.rpsls.push({
+                    time: Date.now(),
+                    u: user.privateToken,
+                    e: enemy.privateToken,
+                    user: false,
+                    enemy: false,
+                    winner: false,
+                    message: false
+                });
+
+                res.status(200).json({
+                    success: true,
+                    url: `${link}/api/rpsls/multiplayer/${user.privateToken}`
+                });
+            };
         } else {
             return res.status(400).json({
                 success: false,
@@ -519,13 +543,17 @@ app.post('/api/verifycode', async (req, res) => {
 
 app.post('/api/tictactoe/multiplayer/:param', async (req, res) => {
     const userPrivateToken = req.params.param;
-    const game = multiplayer.find(obj => obj.x === userPrivateToken);
+    const game = multiplayer.tictcatoe.find(obj => obj.x === userPrivateToken);
 
     if(game) {
         const { time, x, o, board, move, currentPlayer, winner } = req.body;
 
         if(winner) {
             return res.status(200).json(req.body);
+        };
+
+        if(game.winner) {
+            return res.status(200).json(game);
         };
 
         let newCurrentPlayer = currentPlayer === 'X' ? 'O' : 'X';
@@ -535,7 +563,7 @@ app.post('/api/tictactoe/multiplayer/:param', async (req, res) => {
         game.currentPlayer = newCurrentPlayer;
         game.winner = checkWinner(board);
 
-        res.status(200).json({
+        return res.status(200).json({
             time: time,
             x: x,
             o: o,
@@ -554,7 +582,7 @@ app.post('/api/tictactoe/multiplayer/:param', async (req, res) => {
 
 app.get('/api/tictactoe/multiplayer/:param', async (req, res) => {
     const userPrivateToken = req.params.param;
-    const game = multiplayer.find(obj => obj.x === userPrivateToken);
+    const game = multiplayer.tictcatoe.find(obj => obj.x === userPrivateToken);
 
     if(game) {
         res.status(200).json(game);
@@ -568,9 +596,7 @@ app.get('/api/tictactoe/multiplayer/:param', async (req, res) => {
 
 app.post('/api/rpsls', async (req, res) => {
     const { user, computer, winner } = req.body;
-    // console.log(req.body);
-    // const choice = user.toLowerCase();
-    // const computerChoice = computer.toLowerCase();
+
     const validChoices = ['rock', 'paper', 'scissors', 'lizard', 'spock'];
 
     if (winner) {
@@ -615,6 +641,90 @@ app.post('/api/rpsls', async (req, res) => {
         winner: newWinner,
         message: message
     });
+});
+
+app.post('/api/rpsls/multiplayer/:param', async (req, res) => {
+    const userPrivateToken = req.params.param;
+    const game = multiplayer.rpsls.find(obj => obj.u === userPrivateToken);
+
+    if(game) {
+        const { time, u, e, user, enemy, winner, message } = req.body;
+        const validChoices = ['rock', 'paper', 'scissors', 'lizard', 'spock'];
+
+        if(winner) {
+            return res.status(200).json(req.body);
+        };
+
+        if(game.winner) {
+            return res.status(200).json(game);
+        };
+
+        if (user) {
+            if (!validChoices.includes(user.toLowerCase())) {
+                return res.status(400).json({
+                    success: false,
+                    error: 'The user must be a string and must be one of the following: rock, paper, scissors, lizard, spock.'
+                });
+            } else {
+                game.user = user.toLowerCase();
+            };
+        };
+        
+        if (enemy) {
+            if(!validChoices.includes(enemy.toLowerCase())) {
+                return res.status(400).json({
+                    success: false,
+                    error: 'The enemy must be a string and must be one of the following: rock, paper, scissors, lizard, spock.'
+                });
+            } else {
+                game.enemy = enemy.toLowerCase();
+            };
+        };
+
+        if(user && enemy) {
+            const { winner: newWinner, message: newMessage } = checkWinnerRPSLS(user.toLowerCase(), enemy.toLowerCase());
+            game.winner = newWinner;
+            game.message = newMessage;
+            return res.status(200).json({
+                time: time,
+                u: u,
+                e: e,
+                user: game.user,
+                enemy: game.enemy,
+                winner: newWinner,
+                message: newMessage
+            });
+        };
+
+        return res.status(200).json({
+            time: time,
+            u: u,
+            e: e,
+            user: game.user,
+            enemy: game.enemy,
+            winner: false,
+            message: false
+        });
+    } else {
+        return res.status(400).json({
+            success: false,
+            error: 'The game does not exist.'
+        });
+    };
+});
+
+app.get('/api/rpsls/multiplayer/:param', async (req, res) => {
+    const userPrivateToken = req.params.param;
+    const game = multiplayer.rpsls.find(obj => obj.u === userPrivateToken);
+
+    if(game) {
+        res.status(200).json(game);
+    } else {
+        return res.status(400).json({
+            success: false,
+            error: 'The game does not exist.'
+        });
+    };
 });
 
 app.all('*', (req, res) => {

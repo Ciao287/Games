@@ -691,7 +691,6 @@ function restartGame() {
   gameUrl = false;
   first = true;
   document.getElementById('end-game-container').classList.add('hidden');
-  // document.getElementById('go-home-button').classList.add('hidden');
   document.getElementById('line').classList.add('hidden');
   initGame();
 };
