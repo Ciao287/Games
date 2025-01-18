@@ -17,32 +17,32 @@ let gameUrl = false;
 let first = true;
 
 function checkWinner() {
-    let { user, enemy } = gameData;
+  let { user, enemy } = gameData;
 
-    if (user === enemy) return {
-        winner: "Tie",
-        message: "It's a Tie!"
+  if (user === enemy) return {
+    winner: "Tie",
+    message: "It's a Tie!"
+  };
+
+  const winMap = {
+    'scissors': { 'paper': 'Scissors cuts Paper', 'lizard': 'Scissors decapitates Lizard' },
+    'paper': { 'rock': 'Paper covers Rock', 'spock': 'Paper disproves Spock' },
+    'rock': { 'lizard': 'Rock crushes Lizard', 'scissors': 'Rock crushes Scissors' },
+    'lizard': { 'spock': 'Lizard poisons Spock', 'paper': 'Lizard eats Paper' },
+    'spock': { 'scissors': 'Spock smashes Scissors', 'rock': 'Spock vaporizes Rock' }
+  };
+
+  if (winMap[user] && winMap[user][enemy]) {
+    return {
+      winner: "Win",
+      message: winMap[user][enemy]
     };
-
-    const winMap = {
-        'scissors': { 'paper': 'Scissors cuts Paper', 'lizard': 'Scissors decapitates Lizard' },
-        'paper': { 'rock': 'Paper covers Rock', 'spock': 'Paper disproves Spock' },
-        'rock': { 'lizard': 'Rock crushes Lizard', 'scissors': 'Rock crushes Scissors' },
-        'lizard': { 'spock': 'Lizard poisons Spock', 'paper': 'Lizard eats Paper' },
-        'spock': { 'scissors': 'Spock smashes Scissors', 'rock': 'Spock vaporizes Rock' }
+  } else {
+    return {
+      winner: "Lose",
+      message: winMap[enemy][user]
     };
-
-    if (winMap[user] && winMap[user][enemy]) {
-        return {
-            winner: "Win",
-            message: winMap[user][enemy] +"a"
-        };
-    } else {
-        return {
-            winner: "Lose",
-            message: winMap[enemy][user]
-        };
-    }
+  }
 };
 
 function makeMove(cell) {
@@ -219,6 +219,12 @@ function displayConnectionError(data) {
 };
 
 function checkGameStatus(gameData) {
+  if(gameData.user && gameData.enemy && !gameData.winner) {
+    const { winner, message } = checkWinner();
+    gameData.winner = winner;
+    gameData.message = message;
+  };
+  
   if (gameData.winner) {
     let resultMessage;
     if(mode === '0') {
@@ -484,6 +490,12 @@ function fetchGame(start = true, url) {
               enemyMove.textContent = isUser ? `The enemy chose` : `You chose ${gameData.enemy}`;
             };
 
+            if(gameData.user && gameData.enemy && !gameData.winner) {
+              const { winner, message } = checkWinner();
+              gameData.winner = winner;
+              gameData.message = message;
+            };
+
             if(gameData.winner) {
               userMove.textContent = isUser ? `You chose ${gameData.user}` : `The enemy chose ${gameData.user}`;
               enemyMove.textContent = isUser ? `The enemy chose ${gameData.enemy}` : `You chose ${gameData.enemy}`;
@@ -560,6 +572,12 @@ function sendMultiplayerRequest(data, gameUrl, retryCount = 0) {
     };
     if(gameData.enemy) {
       enemyMove.textContent = isUser ? `The enemy chose` : `You chose ${gameData.enemy}`;
+    };
+
+    if(gameData.user && gameData.enemy && !gameData.winner) {
+      const { winner, message } = checkWinner();
+      gameData.winner = winner;
+      gameData.message = message;
     };
 
     if(gameData.winner) {

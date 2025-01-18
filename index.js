@@ -658,6 +658,8 @@ app.post('/api/rpsls/multiplayer/:param', async (req, res) => {
             return res.status(200).json(game);
         };
 
+        let updated = false;
+
         if (user) {
             if (!validChoices.includes(user.toLowerCase())) {
                 return res.status(400).json({
@@ -666,6 +668,7 @@ app.post('/api/rpsls/multiplayer/:param', async (req, res) => {
                 });
             } else {
                 game.user = user.toLowerCase();
+                updated = true;
             };
         };
         
@@ -677,33 +680,47 @@ app.post('/api/rpsls/multiplayer/:param', async (req, res) => {
                 });
             } else {
                 game.enemy = enemy.toLowerCase();
+                updated = true;
             };
         };
 
-        if(user && enemy) {
-            const { winner: newWinner, message: newMessage } = checkWinnerRPSLS(user.toLowerCase(), enemy.toLowerCase());
-            game.winner = newWinner;
-            game.message = newMessage;
+        if(updated) {
+            const newGame = multiplayer.rpsls.find(obj => obj.u === userPrivateToken);
+            if(newGame.user && newGame.enemy) {
+                const { winner: newWinner, message: newMessage } = checkWinnerRPSLS(newGame.user.toLowerCase(), newGame.enemy.toLowerCase());
+                newGame.winner = newWinner;
+                newGame.message = newMessage;
+                return res.status(200).json({
+                    time: time,
+                    u: u,
+                    e: e,
+                    user: newGame.user,
+                    enemy: newGame.enemy,
+                    winner: newWinner,
+                    message: newMessage
+                });
+            };
+
+            return res.status(200).json({
+                time: time,
+                u: u,
+                e: e,
+                user: newGame.user,
+                enemy: newGame.enemy,
+                winner: false,
+                message: false
+            });
+        } else {
             return res.status(200).json({
                 time: time,
                 u: u,
                 e: e,
                 user: game.user,
                 enemy: game.enemy,
-                winner: newWinner,
-                message: newMessage
+                winner: false,
+                message: false
             });
-        };
-
-        return res.status(200).json({
-            time: time,
-            u: u,
-            e: e,
-            user: game.user,
-            enemy: game.enemy,
-            winner: false,
-            message: false
-        });
+        }
     } else {
         return res.status(400).json({
             success: false,
