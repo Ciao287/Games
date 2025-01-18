@@ -584,6 +584,8 @@ function verifyToken(data, retryCount = 0) {
 
     fetchGame(true, gameUrl);
 
+    document.getElementById('go-home-button').classList.add('hidden');
+
     startMultiplayerGame(gameData);
   }).catch(error => {
     console.error("Request error:", error);
