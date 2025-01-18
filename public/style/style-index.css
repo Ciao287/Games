@@ -3,6 +3,7 @@
   justify-content: center;
   gap: 10px;
 }
+
 .game-button {
   width: 200px;
   height: 200px;
@@ -17,6 +18,7 @@
   overflow: hidden;
   border-radius: 32px;
 }
+
 .game-button img {
   position: absolute;
   top: 0;
@@ -27,20 +29,24 @@
   filter: blur(4px);
   z-index: 0;
 }
+
 .game-button span {
   position: absolute;
   z-index: 1;
   width: 100%;
   text-align: center;
 }
+
 .game-button .tic {
   top: 5%;
   font-size: 40px;
 }
+
 .game-button .tac {
   top: 38.5%;
   font-size: 40px;
 }
+
 .game-button .toe {
   top: 72%;
   font-size: 40px;
