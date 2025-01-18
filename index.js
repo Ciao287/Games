@@ -345,7 +345,6 @@ function checkWinnerRPSLS(u, e) {
 }
 
 app.get('/', async (req, res) => {
-    // const file = path.join(__dirname, './', `index.html`);
     res.render('index.ejs');
 });
 
