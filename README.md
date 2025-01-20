@@ -1,22 +1,23 @@
-# TicTacToe
+# Games (Tic Tac Toe and Rock Paper Scissors Lizard Spock)
 
-Demo: [https://tictactoe.is-a.dev](https://tictactoe.is-a.dev)
+Demo: [https://games.is-a.dev](https://games.is-a.dev)
 
 TicTacToe is a project made for High Seas - Hack Club, it allows you to play TicTacToe in single player against the bot, with 3 modes (Easy, Medium and Hard) and in multiplayer, with 2 modes (Classic => you play with 2 devices, Pass and Play => you play from the same device).
 
 TicTacToe is designed to be used everywhere, on websites, in apps, even in Discord bots, thanks to its API.
 
-The [demo site](https://tictactoe.is-a.dev) was created to give you an idea of ​​what can be done with this api, you can easily customize it by modifying the [index.ejs](https://github.com/Ciao287/TicTacToe/blob/main/index.ejs) file, all the files in the [public](https://github.com/Ciao287/TicTacToe/tree/main/public) folder and, in case you want to add new links, [index.js](https://github.com/Ciao287/TicTacToe/blob/main/index.js).
+The [demo site](https://games.is-a.dev) was created to give you an idea of ​​what can be done with this api, you can easily customize it by modifying the [index.ejs](https://github.com/Ciao287/Games/blob/main/index.ejs), [tictactoe.ejs](https://github.com/Ciao287/Games/blob/main/tictactoe.ejs) and [rpsls.ejs](https://github.com/Ciao287/Games/blob/main/rpsls.ejs) files, all the files in the [public](https://github.com/Ciao287/Games/tree/main/public) folder and, in case you want to add new links, [index.js](https://github.com/Ciao287/Games/blob/main/index.js).
 
 ## How to Install
 
 1) If you don't have them already, install [Node.js](https://nodejs.org/en/download/package-manager/current) and [Git](https://git-scm.com/downloads);
 2) Open terminal in the folder where you want to install TicTacToe and run `git clone https://github.com/Ciao287/TicTacToe`;
-3) Open the [config.json](https://github.com/Ciao287/TicTacToe/blob/main/config.json) file, change the `link` value, inserting the complete link that the site will have and the `port` value, inserting the site port;
+3) Open the [config.json](https://github.com/Ciao287/Games/blob/main/config.json) file, change the `link` value, inserting the complete link that the site will have and the `port` value, inserting the site port;
 4) Type `npm install` in the terminal;
 5) Type `node .` in the terminal to start the site.
 
 ## How the API Works
+### Tic Tac Toe
 
 1) Via POST request `/api/tictactoe`, sending as body:
 ```js
@@ -97,3 +98,6 @@ This will return the URL to request to update game parameters:
 }
 ```
 The response will be the same as the body sent, except that `currentPlayer` will change and in case of victory `winner` will become `'X'` or `'O'`.
+
+### Rock Paper Scissors Lizard Spock
+
