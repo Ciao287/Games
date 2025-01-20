@@ -2,9 +2,11 @@
 
 Demo: [https://games.is-a.dev](https://games.is-a.dev)
 
-TicTacToe is a project made for High Seas - Hack Club, it allows you to play TicTacToe in single player against the bot, with 3 modes (Easy, Medium and Hard) and in multiplayer, with 2 modes (Classic => you play with 2 devices, Pass and Play => you play from the same device).
+Games is a project made for High Seas - Hack Club, it allows you to play:
+- Tic Tac Toe in single player against the bot, with 3 modes (Easy, Medium and Hard) and in multiplayer, with 2 modes (Classic => you play with 2 devices, Pass and Play => you play from the same device).
+- Rock Paper Scissors Lizard Spock in single player against the bot and in multiplayer, with 2 modes (Classic => you play with 2 devices, Pass and Play => you play from the same device).
 
-TicTacToe is designed to be used everywhere, on websites, in apps, even in Discord bots, thanks to its API.
+The games are designed to be used everywhere, on websites, in apps, even in Discord bots, thanks to its API.
 
 The [demo site](https://games.is-a.dev) was created to give you an idea of ​​what can be done with this api, you can easily customize it by modifying the [index.ejs](https://github.com/Ciao287/Games/blob/main/index.ejs), [tictactoe.ejs](https://github.com/Ciao287/Games/blob/main/tictactoe.ejs) and [rpsls.ejs](https://github.com/Ciao287/Games/blob/main/rpsls.ejs) files, all the files in the [public](https://github.com/Ciao287/Games/tree/main/public) folder and, in case you want to add new links, [index.js](https://github.com/Ciao287/Games/blob/main/index.js).
 
