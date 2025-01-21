@@ -69,7 +69,7 @@ It will return the bot's move, based on the difficulty:
     c7: false, c8: 'O', c9: 'X'
   }, //Values ​​can be false, 'X' or 'O'
   move: 'c8', //Values ​​can be from 'c1' to 'c9'
-  winner: 'O' //Values ​​can be false, 'X' or 'O'
+  winner: 'O' //Values ​​can be false, 'X', 'O' or 'Tie'
 }
 ```
 2) Via GET request `/api/tictactoe/multiplayer/PRIVATE_TOKEN` you will receive the data of that match:
@@ -85,7 +85,7 @@ It will return the bot's move, based on the difficulty:
   }, //Values ​​can be false, 'X' or 'O'
   currentPlayer: 'O', //Values ​​can be 'X' or 'O'
   move: 'c9', //Values ​​can be from 'c1' to 'c9'
-  winner: false //Values ​​can be false, 'X' or 'O'
+  winner: false //Values ​​can be false, 'X', 'O' or 'Tie'
 }
 ```
 3) Via POST request `/api/tictactoe/multiplayer/PRIVATE_TOKEN`, sending as body:
@@ -101,7 +101,7 @@ It will return the bot's move, based on the difficulty:
   }, //Values ​​can be false, 'X' or 'O'
   currentPlayer: 'O', //Values ​​can be 'X' or 'O'
   move: 'c9', //Values ​​can be from 'c1' to 'c9'
-  winner: false //Values ​​can be false, 'X' or 'O'
+  winner: false //Values ​​can be false, 'X', 'O' or 'Tie'
 }
 ```
 The response will be the same as the body sent, except that `currentPlayer` will change and in case of victory `winner` will become `'X'`, `'O'` or `'Tie'`.
@@ -124,7 +124,7 @@ It will return the bot's move, the winner, and the winning message:
   user: 'spock', //Values ​​can be 'rock', 'paper', 'scissors', 'lizard' or 'spock'
   enemy: 'scissors', //Values ​​can be 'rock', 'paper', 'scissors', 'lizard' or 'spock'
   winner: 'Win', //Values ​​can be 'Win', 'Lose' or 'Tie'
-  message: 'Spock smashes Scissors' //There are 10 different messages, to see them all visit https://github.com/Ciao287/Games/blob/main/index.js lines 327-331
+  message: 'Spock smashes Scissors' //There are 10 different messages, to see them all visit https://github.com/Ciao287/Games/blob/main/index.js#L327-L331 (lines 327-331)
 }
 ```
 2) Via GET request `/api/rpsls/multiplayer/PRIVATE_TOKEN` you will receive the data of that match:
@@ -136,7 +136,7 @@ It will return the bot's move, the winner, and the winning message:
   user: 'spock', //Values ​​can be 'rock', 'paper', 'scissors', 'lizard' or 'spock' or false
   enemy: false, //Values ​​can be 'rock', 'paper', 'scissors', 'lizard', 'spock' or false
   winner: false, //Values ​​can be false, 'Win', 'Lose' or 'Tie'
-  message: false //There are 10 different messages, to see them all visit https://github.com/Ciao287/Games/blob/main/index.js lines 327-331. In this case, it can also be false because the game has not ended yet.
+  message: false //There are 10 different messages, to see them all visit https://github.com/Ciao287/Games/blob/main/index.js#L327-L331 (lines 327-331). In this case, it can also be false because the game has not ended yet
 }
 ```
 3) Via POST request `/api/rpsls/multiplayer/PRIVATE_TOKEN`, sending as body:
@@ -146,9 +146,9 @@ It will return the bot's move, the winner, and the winning message:
   u: 'MTczNTA5MTc5MDg3NQ6DMAKd', //User's private token
   e: 'MTczNTA5Mjg1OTcxOA6CMAvR', //Enemy's private token
   user: 'spock', //Values ​​can be 'rock', 'paper', 'scissors', 'lizard' or 'spock' or false
-  enemy: scissors, //Values ​​can be 'rock', 'paper', 'scissors', 'lizard', 'spock' or false
+  enemy: 'scissors', //Values ​​can be 'rock', 'paper', 'scissors', 'lizard', 'spock' or false
   winner: false, //Values ​​can be false, 'Win', 'Lose' or 'Tie'
-  message: false //There are 10 different messages, to see them all visit https://github.com/Ciao287/Games/blob/main/index.js lines 327-331. In this case, it can also be false because the game has not ended yet.
+  message: false //There are 10 different messages, to see them all visit https://github.com/Ciao287/Games/blob/main/index.js#L327-L331 (lines 327-331). In this case, it can also be false because the game has not ended yet
 }
 ```
 The response will be the same as the body sent, except that in case of victory `winner` will become `'Win'`, `'Lose'` or `'Tie'` and `message` will become one of the messages listed in [index.js lines 327-331](https://github.com/Ciao287/Games/blob/main/index.js#L327-L331).
