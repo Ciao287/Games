@@ -40,7 +40,7 @@ This will return the URL to request to update game parameters:
 ```js
 {
   success: true,
-  url: `${link}/api/${game}/multiplayer/${user.privateToken}` //`link` is taken from config.json => (https://github.com/Ciao287/Games/blob/main/config.json), while `user.privateToken` is the private token of the user you want to play with. The `game` can be either 'tictactoe' or 'rpsls' depending on the tokens used.
+  url: `${link}/api/${game}/multiplayer/${user.privateToken}` //`link` is taken from config.json => (https://github.com/Ciao287/Games/blob/main/config.json), while `user.privateToken` is the private token of the user you want to play with. The `game` can be either 'tictactoe' or 'rpsls' depending on the tokens used
 }
 ```
 
