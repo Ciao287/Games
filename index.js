@@ -647,7 +647,7 @@ app.post('/api/rpsls/multiplayer/:param', async (req, res) => {
     const game = multiplayer.rpsls.find(obj => obj.u === userPrivateToken);
 
     if(game) {
-        const { time, u, e, user, enemy, winner, message } = req.body;
+        const { time, u, e, user, enemy, winner } = req.body;
         const validChoices = ['rock', 'paper', 'scissors', 'lizard', 'spock'];
 
         if(winner) {
