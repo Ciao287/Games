@@ -4,9 +4,10 @@ body {
   align-items: center;
   height: 100vh;
   margin: 0;
-  font-family: 'Times New Roman', Times, serif;
+  font-family: 'Roboto', sans-serif !important;
   position: relative;
   overflow: hidden;
+  background-color: #24273a;
 }
 
 .container {
@@ -40,12 +41,12 @@ body {
   position: absolute;
   top: 30px;
   left: 0;
-  background-color: #f0f0f0;
+  background-color: #181926;
+  color: #a5adcb;
   padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  border: 1px solid black;
+  border-radius: 6px;
   width: 200px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 #invitation-code:hover #invitation-description {
@@ -58,18 +59,68 @@ body {
   align-items: center;
 }
 
+.red {
+  color: #ed8796;
+}
+
+h1 {
+  color: #cad3f5;
+  text-align: center;
+}
+
+h2 {
+  color: #b8c0e0;
+  text-align: center;
+}
+
+h3 {
+  color: #a5adcb;
+  text-align: center;
+}
+
+a {
+  color: #8aadf4;
+}
+
 select {
-  font-family: 'Times New Roman', Times, serif;
-  font-size: 17px;
+  font-size: 17px;  
+  color: #b8c0e0;
+  background-color: #181926;
+  border: 3px solid #181926;
+  border-radius: 5px;
 }
 
 select:focus {
   outline: none;
 }
 
+select:hover {
+  cursor: pointer;
+}
+
 button {
-  font-family: 'Times New Roman', Times, serif;
   font-size: 17px;
+  color: #b8c0e0;
+  background-color: #181926;
+  border: 3px solid #181926;
+  border-radius: 5px;
+}
+
+.theme-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: transparent !important;
+  border: none !important;
+}
+
+.theme-button img {
+  width: 50px;
+  height: 50px;
+}
+
+button:hover {
+  cursor: pointer;
 }
 
 button:focus {
@@ -78,17 +129,20 @@ button:focus {
 
 p {
   font-size: 20px;
+  color: #a5adcb;
 }
 
 label {
   font-size: 20px;
+  color: #b8c0e0;
 }
 
 input {
-  font-family:'Times New Roman', Times, serif;
   font-size: 17px;
-  border: 1px solid gray;
-  border-radius: 4px;
+  color: #b8c0e0;
+  background-color: #181926;
+  border: 3px solid #181926;
+  border-radius: 5px;
 }
 
 input:focus {

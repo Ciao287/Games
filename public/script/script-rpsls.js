@@ -660,7 +660,8 @@ function verifyCode() {
       inputError = document.createElement('p');
       inputError.id = 'input-error';
       inputError.textContent = textError;
-      inputError.style = 'color: red; margin-top: 5px';
+      inputError.classList.add('red');
+      inputError.style = 'margin-top: 5px';
 
       tokenContainer.appendChild(inputError);
     };
@@ -705,7 +706,8 @@ function verifyToken(data, retryCount = 0) {
         inputError = document.createElement('p');
         inputError.id = 'input-error';
         inputError.textContent = textError;
-        inputError.style = 'color: red; margin-top: 5px';
+        inputError.classList.add('red');
+        inputError.style = 'margin-top: 5px';
 
         tokenContainer.appendChild(inputError);
       };
@@ -726,7 +728,8 @@ function verifyToken(data, retryCount = 0) {
           inputError = document.createElement('p');
           inputError.id = 'input-error';
           inputError.textContent = 'Failed to verify the code. Please try again.';
-          inputError.style = 'color: red; margin-top: 5px';
+          inputError.classList.add('red');
+          inputError.style = 'margin-top: 5px';
 
           tokenContainer.appendChild(inputError);
         };

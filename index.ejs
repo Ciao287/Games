@@ -5,10 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Choose your game</title>
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
-  <link rel="stylesheet" type="text/css" href="/style/style.css">
+  <link id="style" rel="stylesheet" type="text/css" href="/style/style.css">
   <link rel="stylesheet" type="text/css" href="/style/style-index.css">
 </head>
 <body>
+  <button id="theme-light" class="theme-button">
+    <img src="/svg/sun.svg" alt="Light">
+  </button>
+  <button id="theme-dark" class="theme-button hidden">
+    <img src="/svg/moon.svg" alt="Dark">
+  </button>
   <div class="container">
     <h1>Choose your game</h1>
     <div class="button-container">
@@ -18,8 +24,8 @@
         <span class="tac">Tac</span>
         <span class="toe">Toe</span>
       </button>
-      <button class="game-button n2" onclick="window.location.href='/rpsls'">
-        <img class="rpsls-logo" src="/svg/spock.svg" alt="Rock Paper Scissors Lizard Spock">
+      <button id="rpsls" class="game-button" onclick="window.location.href='/rpsls'">
+        <img id="spock-svg" class="rpsls-logo" src="/svg/spock-black.svg" alt="Rock Paper Scissors Lizard Spock">
         <span class="rpsls rock">Rock</span>
         <span class="rpsls paper">Paper</span>
         <span class="rpsls scissors">Scissors</span>
@@ -28,5 +34,6 @@
       </button>
     </div>
   </div>
+  <script src="/script/themes.js"></script>
 </body>
 </html>

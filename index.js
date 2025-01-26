@@ -450,15 +450,15 @@ app.post('/api/verifycode', async (req, res) => {
     const user = tokens.find(obj => obj.publicToken === code);
     const enemy = tokens.find(obj => obj.privateToken === privateToken);
 
-    if (user.type !== enemy.type) {
-        return res.status(400).json({
-            success: false,
-            errorCode: 6,
-            error: "The user you are trying to play with is playing a different game."
-        });
-    }
-
     if (user && enemy) {
+        if (user.type !== enemy.type) {
+            return res.status(400).json({
+                success: false,
+                errorCode: 6,
+                error: "The user you are trying to play with is playing a different game."
+            });
+        };
+        
         const isUserInGame = multiplayer.tictcatoe.find(obj => obj.x === user.privateToken || obj.o === user.privateToken);
         const isEnemyInGame = multiplayer.tictcatoe.find(obj => obj.x === enemy.privateToken || obj.o === enemy.privateToken);
         
