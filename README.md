@@ -18,6 +18,12 @@ The [demo site](https://games.is-a.dev) was created to give you an idea of â€‹â€
 4) Type `npm install` in the terminal;
 5) Type `node .` in the terminal to start the site.
 
+## SVG Attribution
+
+This project uses SVG icons under various licenses.
+
+For detailed attribution information (including sources, licenses, and any modifications), please visit the [`public/svg`](https://github.com/Ciao287/Games/tree/main/public/svg) folder. Each SVG file includes comments specifying its source, license, and any changes made.
+
 ## How the API Works
 ### General requests
 Below are the requests that can be used for both Tic Tac Toe and Rock Paper Scissors Llizard Spock:
