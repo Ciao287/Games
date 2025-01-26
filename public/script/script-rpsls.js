@@ -15,6 +15,7 @@ let publicToken;
 let fetchInterval = null;
 let gameUrl = false;
 let first = true;
+let mediaQueryRule = false;
 
 function checkWinner() {
   let { user, enemy } = gameData;
@@ -845,35 +846,58 @@ document.getElementById('go-home-button').onclick = function() {
 };
 
 function addMediaQueryRule() {
+  let height;
+  if(window.innerWidth < 450) {
+    height = 1700;
+  } else if(window.innerWidth < 660) {
+    height = 1200;
+  } else if(window.innerWidth < 1080) {
+    height = 900;
+  } else {
+    height = 600;
+  };
   const styleSheet = document.styleSheets[1];
-  const mediaQuery = '@media (max-height: 800px) { .container { justify-content: flex-start; } }';
+  const mediaQuery = `@media (max-height: ${height}px) { .container { justify-content: flex-start !important; } }`;
   
   if (styleSheet.insertRule) {
     styleSheet.insertRule(mediaQuery, styleSheet.cssRules.length);
   }
+  console.log(styleSheet.cssRules)
+  mediaQueryRule = true;
 };
 
 function removeMediaQueryRule() {
   const styleSheet = document.styleSheets[1];
   const rules = styleSheet.cssRules || styleSheet.rules;
-  
-  for (let i = 0; i < rules.length; i++) {
-    if (rules[i] instanceof CSSMediaRule && rules[i].conditionText === '(max-height: 800px)') {
-      const mediaRules = rules[i].cssRules;
-      for (let j = 0; j < mediaRules.length; j++) {
-        if (mediaRules[j].selectorText === '.container' && mediaRules[j].style.justifyContent === 'flex-start') {
-          rules[i].deleteRule(j);
-          break;
-        }
-      }
 
-      if (rules[i].cssRules.length === 0) {
-        styleSheet.deleteRule(i);
+  for (let i = 0; i < rules.length; i++) {
+    if (rules[i] instanceof CSSMediaRule) {
+      const conditionText = rules[i].conditionText;
+      if (conditionText.startsWith('(max-height:')) {
+        const mediaRules = rules[i].cssRules;
+        for (let j = 0; j < mediaRules.length; j++) {
+          if (mediaRules[j].selectorText === '.container' && mediaRules[j].style.justifyContent === 'flex-start') {
+            rules[i].deleteRule(j);
+            break;
+          }
+        }
+
+        if (rules[i].cssRules.length === 0) {
+          styleSheet.deleteRule(i);
+        }
+        break;
       }
-      break;
     }
   }
-};
+  mediaQueryRule = false;
+}
+
+window.addEventListener('resize', function() {
+  if(mediaQueryRule) {
+    removeMediaQueryRule();
+    addMediaQueryRule();
+  };
+});
 
 initBoard();
 initGame();

@@ -66,9 +66,3 @@
   visibility: visible;
   opacity: 1;
 }
-
-@media (max-height: 800px) {
-  .container {
-    justify-content: flex-start;
-  }
-}
