@@ -1,5 +1,6 @@
 .button-container {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   gap: 10px;
 }
@@ -40,6 +41,10 @@
   left: 2.5% !important;
   width: 95% !important;
   height: 95% !important;
+  filter: blur(2px) !important;
+}
+
+.battleship-logo {
   filter: blur(2px) !important;
 }
 

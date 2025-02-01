@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Battleship</title>
+  <link rel="icon" href="/favicon-battleship.ico" type="image/x-icon">
+  <link rel="stylesheet" type="text/css" href="/style/style.css">
+  <link rel="stylesheet" type="text/css" href="/style/style-battleship.css">
+</head>
+<body>
+  <button id="theme-light" class="theme-button">
+    <img src="/svg/sun.svg" alt="Light">
+  </button>
+  <button id="theme-dark" class="theme-button hidden">
+    <img src="/svg/moon.svg" alt="Dark">
+  </button>
+  <div class="container">
+    <h1>Battleship</h1>
+
+    <div id="difficulty-container" class="hidden">
+      <label for="difficulty">Choose difficulty:</label>
+      <select id="mode">
+        <option value="0">Single Player</option>
+        <option value="1">Multiplayer</option>
+      </select>
+      <!-- <select id="difficulty">
+        <option value="0">Easy</option>
+        <option value="1">Medium</option>
+        <option value="2">Hard</option> -->
+      </select>
+      <!-- <select id="multiplayer" class="hidden">
+        <option value="0">Classic</option>
+        <option value="1">Pass and Play</option>
+      </select> -->
+      <button id="start-game">Start Game</button>
+    </div>
+    <div id="token-container" class="hidden">
+      <div id="invitation-container">
+      </div>
+    </div>
+    <h3 id="setup-message" class="hidden"></h3>
+    <div style="display: flex; align-items: center;">
+      <div id="board-container" class="hidden">
+        <div class="board" id="enemy-board">
+          <div style="display: flex;">
+            <div class="cell tl"></div>
+            <div class="cell">1</div>
+            <div class="cell">2</div>
+            <div class="cell">3</div>
+            <div class="cell">4</div>
+            <div class="cell">5</div>
+            <div class="cell">6</div>
+            <div class="cell">7</div>
+            <div class="cell">8</div>
+            <div class="cell">9</div>
+            <div class="cell tr">10</div>
+          </div>
+          <div style="display: flex;">
+            <div class="cell">A</div>
+            <div class="cell" id="ec1"></div>
+            <div class="cell" id="ec2"></div>
+            <div class="cell" id="ec3"></div>
+            <div class="cell" id="ec4"></div>
+            <div class="cell" id="ec5"></div>
+            <div class="cell" id="ec6"></div>
+            <div class="cell" id="ec7"></div>
+            <div class="cell" id="ec8"></div>
+            <div class="cell" id="ec9"></div>
+            <div class="cell" id="ec10"></div>
+          </div>
+          <div style="display: flex;">
+            <div class="cell">B</div>
+            <div class="cell" id="ec11"></div>
+            <div class="cell" id="ec12"></div>
+            <div class="cell" id="ec13"></div>
+            <div class="cell" id="ec14"></div>
+            <div class="cell" id="ec15"></div>
+            <div class="cell" id="ec16"></div>
+            <div class="cell" id="ec17"></div>
+            <div class="cell" id="ec18"></div>
+            <div class="cell" id="ec19"></div>
+            <div class="cell" id="ec20"></div>
+          </div>
+          <div style="display: flex;">
+            <div class="cell">C</div>
+            <div class="cell" id="ec21"></div>
+            <div class="cell" id="ec22"></div>
+            <div class="cell" id="ec23"></div>
+            <div class="cell" id="ec24"></div>
+            <div class="cell" id="ec25"></div>
+            <div class="cell" id="ec26"></div>
+            <div class="cell" id="ec27"></div>
+            <div class="cell" id="ec28"></div>
+            <div class="cell" id="ec29"></div>
+            <div class="cell" id="ec30"></div>
+          </div>
+          <div style="display: flex;">
+            <div class="cell">D</div>
+            <div class="cell" id="ec31"></div>
+            <div class="cell" id="ec32"></div>
+            <div class="cell" id="ec33"></div>
+            <div class="cell" id="ec34"></div>
+            <div class="cell" id="ec35"></div>
+            <div class="cell" id="ec36"></div>
+            <div class="cell" id="ec37"></div>
+            <div class="cell" id="ec38"></div>
+            <div class="cell" id="ec39"></div>
+            <div class="cell" id="ec40"></div>
+          </div>
+          <div style="display: flex;">
+            <div class="cell">E</div>
+            <div class="cell" id="ec41"></div>
+            <div class="cell" id="ec42"></div>
+            <div class="cell" id="ec43"></div>
+            <div class="cell" id="ec44"></div>
+            <div class="cell" id="ec45"></div>
+            <div class="cell" id="ec46"></div>
+            <div class="cell" id="ec47"></div>
+            <div class="cell" id="ec48"></div>
+            <div class="cell" id="ec49"></div>
+            <div class="cell" id="ec50"></div>
+          </div>
+          <div style="display: flex;">
+            <div class="cell">F</div>
+            <div class="cell" id="ec51"></div>
+            <div class="cell" id="ec52"></div>
+            <div class="cell" id="ec53"></div>
+            <div class="cell" id="ec54"></div>
+            <div class="cell" id="ec55"></div>
+            <div class="cell" id="ec56"></div>
+            <div class="cell" id="ec57"></div>
+            <div class="cell" id="ec58"></div>
+            <div class="cell" id="ec59"></div>
+            <div class="cell" id="ec60"></div>
+          </div>
+          <div style="display: flex;">
+            <div class="cell">G</div>
+            <div class="cell" id="ec61"></div>
+            <div class="cell" id="ec62"></div>
+            <div class="cell" id="ec63"></div>
+            <div class="cell" id="ec64"></div>
+            <div class="cell" id="ec65"></div>
+            <div class="cell" id="ec66"></div>
+            <div class="cell" id="ec67"></div>
+            <div class="cell" id="ec68"></div>
+            <div class="cell" id="ec69"></div>
+            <div class="cell" id="ec70"></div>
+          </div>
+          <div style="display: flex;">
+            <div class="cell">H</div>
+            <div class="cell" id="ec71"></div>
+            <div class="cell" id="ec72"></div>
+            <div class="cell" id="ec73"></div>
+            <div class="cell" id="ec74"></div>
+            <div class="cell" id="ec75"></div>
+            <div class="cell" id="ec76"></div>
+            <div class="cell" id="ec77"></div>
+            <div class="cell" id="ec78"></div>
+            <div class="cell" id="ec79"></div>
+            <div class="cell" id="ec80"></div>
+          </div>
+          <div style="display: flex;">
+            <div class="cell">I</div>
+            <div class="cell" id="ec81"></div>
+            <div class="cell" id="ec82"></div>
+            <div class="cell" id="ec83"></div>
+            <div class="cell" id="ec84"></div>
+            <div class="cell" id="ec85"></div>
+            <div class="cell" id="ec86"></div>
+            <div class="cell" id="ec87"></div>
+            <div class="cell" id="ec88"></div>
+            <div class="cell" id="ec89"></div>
+            <div class="cell" id="ec90"></div>
+          </div>
+          <div style="display: flex;">
+            <div class="cell bl">J</div>
+            <div class="cell" id="ec91"></div>
+            <div class="cell" id="ec92"></div>
+            <div class="cell" id="ec93"></div>
+            <div class="cell" id="ec94"></div>
+            <div class="cell" id="ec95"></div>
+            <div class="cell" id="ec96"></div>
+            <div class="cell" id="ec97"></div>
+            <div class="cell" id="ec98"></div>
+            <div class="cell" id="ec99"></div>
+            <div class="cell br" id="ec100"></div>
+          </div>
+        </div>
+        <div class="board" id="board">
+          <div style="display: flex;">
+            <div class="cell tl"></div>
+            <div class="cell">1</div>
+            <div class="cell">2</div>
+            <div class="cell">3</div>
+            <div class="cell">4</div>
+            <div class="cell">5</div>
+            <div class="cell">6</div>
+            <div class="cell">7</div>
+            <div class="cell">8</div>
+            <div class="cell">9</div>
+            <div class="cell tr">10</div>
+          </div>
+          <div style="display: flex;">
+            <div class="cell">A</div>
+            <div class="cell" id="c1"></div>
+            <div class="cell" id="c2"></div>
+            <div class="cell" id="c3"></div>
+            <div class="cell" id="c4"></div>
+            <div class="cell" id="c5"></div>
+            <div class="cell" id="c6"></div>
+            <div class="cell" id="c7"></div>
+            <div class="cell" id="c8"></div>
+            <div class="cell" id="c9"></div>
+            <div class="cell" id="c10"></div>
+          </div>
+          <div style="display: flex;">
+            <div class="cell">B</div>
+            <div class="cell" id="c11"></div>
+            <div class="cell" id="c12"></div>
+            <div class="cell" id="c13"></div>
+            <div class="cell" id="c14"></div>
+            <div class="cell" id="c15"></div>
+            <div class="cell" id="c16"></div>
+            <div class="cell" id="c17"></div>
+            <div class="cell" id="c18"></div>
+            <div class="cell" id="c19"></div>
+            <div class="cell" id="c20"></div>
+          </div>
+          <div style="display: flex;">
+            <div class="cell">C</div>
+            <div class="cell" id="c21"></div>
+            <div class="cell" id="c22"></div>
+            <div class="cell" id="c23"></div>
+            <div class="cell" id="c24"></div>
+            <div class="cell" id="c25"></div>
+            <div class="cell" id="c26"></div>
+            <div class="cell" id="c27"></div>
+            <div class="cell" id="c28"></div>
+            <div class="cell" id="c29"></div>
+            <div class="cell" id="c30"></div>
+          </div>
+          <div style="display: flex;">
+            <div class="cell">D</div>
+            <div class="cell" id="c31"></div>
+            <div class="cell" id="c32"></div>
+            <div class="cell" id="c33"></div>
+            <div class="cell" id="c34"></div>
+            <div class="cell" id="c35"></div>
+            <div class="cell" id="c36"></div>
+            <div class="cell" id="c37"></div>
+            <div class="cell" id="c38"></div>
+            <div class="cell" id="c39"></div>
+            <div class="cell" id="c40"></div>
+          </div>
+          <div style="display: flex;">
+            <div class="cell">E</div>
+            <div class="cell" id="c41"></div>
+            <div class="cell" id="c42"></div>
+            <div class="cell" id="c43"></div>
+            <div class="cell" id="c44"></div>
+            <div class="cell" id="c45"></div>
+            <div class="cell" id="c46"></div>
+            <div class="cell" id="c47"></div>
+            <div class="cell" id="c48"></div>
+            <div class="cell" id="c49"></div>
+            <div class="cell" id="c50"></div>
+          </div>
+          <div style="display: flex;">
+            <div class="cell">F</div>
+            <div class="cell" id="c51"></div>
+            <div class="cell" id="c52"></div>
+            <div class="cell" id="c53"></div>
+            <div class="cell" id="c54"></div>
+            <div class="cell" id="c55"></div>
+            <div class="cell" id="c56"></div>
+            <div class="cell" id="c57"></div>
+            <div class="cell" id="c58"></div>
+            <div class="cell" id="c59"></div>
+            <div class="cell" id="c60"></div>
+          </div>
+          <div style="display: flex;">
+            <div class="cell">G</div>
+            <div class="cell" id="c61"></div>
+            <div class="cell" id="c62"></div>
+            <div class="cell" id="c63"></div>
+            <div class="cell" id="c64"></div>
+            <div class="cell" id="c65"></div>
+            <div class="cell" id="c66"></div>
+            <div class="cell" id="c67"></div>
+            <div class="cell" id="c68"></div>
+            <div class="cell" id="c69"></div>
+            <div class="cell" id="c70"></div>
+          </div>
+          <div style="display: flex;">
+            <div class="cell">H</div>
+            <div class="cell" id="c71"></div>
+            <div class="cell" id="c72"></div>
+            <div class="cell" id="c73"></div>
+            <div class="cell" id="c74"></div>
+            <div class="cell" id="c75"></div>
+            <div class="cell" id="c76"></div>
+            <div class="cell" id="c77"></div>
+            <div class="cell" id="c78"></div>
+            <div class="cell" id="c79"></div>
+            <div class="cell" id="c80"></div>
+          </div>
+          <div style="display: flex;">
+            <div class="cell">I</div>
+            <div class="cell" id="c81"></div>
+            <div class="cell" id="c82"></div>
+            <div class="cell" id="c83"></div>
+            <div class="cell" id="c84"></div>
+            <div class="cell" id="c85"></div>
+            <div class="cell" id="c86"></div>
+            <div class="cell" id="c87"></div>
+            <div class="cell" id="c88"></div>
+            <div class="cell" id="c89"></div>
+            <div class="cell" id="c90"></div>
+          </div>
+          <div style="display: flex;">
+            <div class="cell bl">J</div>
+            <div class="cell" id="c91"></div>
+            <div class="cell" id="c92"></div>
+            <div class="cell" id="c93"></div>
+            <div class="cell" id="c94"></div>
+            <div class="cell" id="c95"></div>
+            <div class="cell" id="c96"></div>
+            <div class="cell" id="c97"></div>
+            <div class="cell" id="c98"></div>
+            <div class="cell" id="c99"></div>
+            <div class="cell br" id="c100"></div>
+          </div>
+        </div>
+      </div>
+      <div id="ships-container" class="hidden">
+        <div class="ship-container">
+          <h3>Carrier:</h3>
+          <button class="rotate-button">Rotate</button>
+          <button class="reset-button hidden">Reset</button>
+          <div class="ship" id="carrier" data-size="5" draggable="true">
+            <div class="ship-cell"></div>
+            <div class="ship-cell"></div>
+            <div class="ship-cell" ></div>
+            <div class="ship-cell"></div>
+            <div class="ship-cell"></div>
+          </div>
+        </div>
+        <div class="ship-container">
+          <h3>Battleship:</h3>
+          <button class="rotate-button">Rotate</button>
+          <button class="reset-button hidden">Reset</button>
+          <div class="ship" id="battleship" data-size="4" draggable="true">
+            <div class="ship-cell"></div>
+            <div class="ship-cell"></div>
+            <div class="ship-cell"></div>
+            <div class="ship-cell"></div>
+          </div>
+        </div>
+        <div class="ship-container">
+          <h3>Destroyer:</h3>
+          <button class="rotate-button">Rotate</button>
+          <button class="reset-button hidden">Reset</button>
+          <div class="ship" id="destroyer" data-size="3" draggable="true">
+            <div class="ship-cell"></div>
+            <div class="ship-cell"></div>
+            <div class="ship-cell"></div>
+          </div>
+        </div>
+        <div class="ship-container">
+          <h3>Submarine:</h3>
+          <button class="rotate-button">Rotate</button>
+          <button class="reset-button hidden">Reset</button>
+          <div class="ship" id="submarine" data-size="3" draggable="true">
+            <div class="ship-cell"></div>
+            <div class="ship-cell"></div>
+            <div class="ship-cell"></div>
+          </div>
+        </div>
+        <div class="ship-container">
+          <h3>Patrol Boat:</h3>
+          <button class="rotate-button">Rotate</button>
+          <button class="reset-button hidden">Reset</button>
+          <div class="ship" id="patrolBoat" data-size="2" draggable="true">
+            <div class="ship-cell"></div>
+            <div class="ship-cell"></div>
+          </div>
+        </div>
+        <div style="width: 100%; display: flex; justify-content: center;">
+          <button id="check-positions">Check Positions</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="end-game-container" class="hidden">
+      <p id="result-message"></p>
+      <button id="restart-game">Play Again</button>
+    </div>
+    <div class="button-container">
+      <button id="go-home-button">Go to Home</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    const link = "<%= link %>";
+  </script>
+  <script src="/script/script-battleship.js"></script>
+  <script src="/script/themes.js"></script>
+</body>
+</html>
