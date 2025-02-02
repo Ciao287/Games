@@ -1,4 +1,4 @@
-# Games (Tic Tac Toe and Rock Paper Scissors Lizard Spock)
+# Games (Tic Tac Toe, Rock Paper Scissors Lizard Spock and Battleship)
 
 Demo: [https://games.is-a.dev](https://games.is-a.dev)
 
