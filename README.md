@@ -61,7 +61,7 @@ Below are the requests specific to Tic Tac Toe:
 {
   difficulty: 2, //A number from 1 to 3
   board: {
-    c1: 'X', c2: 'O, c3: 'X',
+    c1: 'X', c2: 'O', c3: 'X',
     c4: false, c5: 'O', c6: false,
     c7: false, c8: false, c9: 'X'
   } //Values ​​can be false, 'X' or 'O'
