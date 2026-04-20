@@ -1,6 +1,6 @@
 # Games (Tic Tac Toe, Rock Paper Scissors Lizard Spock and Battleship)
 
-Demo: [https://games.is-a.dev](https://games.is-a.dev)
+Demo: [https://games.ciao287.com](https://games.ciao287.com)
 
 I have always liked these games ever since I first discovered them, especially Rock Paper Scissors Lizard Spock. Every time I play them, they bring me happiness. I hope they can bring it to you too!
 
@@ -11,7 +11,7 @@ Games is a project made for High Seas - Hack Club, it allows you to play:
 
 The games are designed to be used everywhere, on websites, in apps, and even in Discord bots, thanks to its API.
 
-The [demo site](https://games.is-a.dev) was created to give you an idea of ​​what can be done with this api, you can easily customize it by modifying the [index.ejs](https://github.com/Ciao287/Games/blob/main/index.ejs), [tictactoe.ejs](https://github.com/Ciao287/Games/blob/main/tictactoe.ejs), [rpsls.ejs](https://github.com/Ciao287/Games/blob/main/rpsls.ejs) and [battleship.ejs](https://github.com/Ciao287/Games/blob/main/battleship.ejs) files, all the files in the [public](https://github.com/Ciao287/Games/tree/main/public) folder and, in case you want to add new links, [index.js](https://github.com/Ciao287/Games/blob/main/index.js).
+The [demo site](https://games.ciao287.com) was created to give you an idea of ​​what can be done with this api, you can easily customize it by modifying the [index.ejs](https://github.com/Ciao287/Games/blob/main/index.ejs), [tictactoe.ejs](https://github.com/Ciao287/Games/blob/main/tictactoe.ejs), [rpsls.ejs](https://github.com/Ciao287/Games/blob/main/rpsls.ejs) and [battleship.ejs](https://github.com/Ciao287/Games/blob/main/battleship.ejs) files, all the files in the [public](https://github.com/Ciao287/Games/tree/main/public) folder and, in case you want to add new links, [index.js](https://github.com/Ciao287/Games/blob/main/index.js).
 
 ## How to Install
 
